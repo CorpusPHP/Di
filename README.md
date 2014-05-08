@@ -16,7 +16,6 @@ Corpus Di is available through Packagist via Composer.
 		"corpus/di": "dev-master",
 	}
 }
-				
 ```
 
 ## Documentation

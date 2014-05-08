@@ -19,8 +19,7 @@ Corpus Di is available through Packagist via Composer.
 	"require": {
 		"corpus/di": "dev-master",
 	}
-}
-				</source>
+}</source>
 			</section>
             <section title="Documentation">
                 <recursivedirectory name="src"/>
