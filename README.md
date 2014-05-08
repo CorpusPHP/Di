@@ -11,8 +11,10 @@ A Simple Di Container
 Corpus Di is available through Packagist via Composer.
 
 ```json
-"require": {
-	"corpus/di": "dev-master",
+{
+	"require": {
+		"corpus/di": "dev-master",
+	}
 }
 				
 ```
