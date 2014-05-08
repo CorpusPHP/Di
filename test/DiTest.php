@@ -74,7 +74,7 @@ class DiTest extends PHPUnit_Framework_TestCase {
 		// call the same request a second time to test memoization.
 		$this->assertSame(12, $di->getNew('test_callback'), "Memoizing, should not!");
 
-		$eight = $di->getNew('test_argument_callback', [ 3, 5 ]);
+		$eight = $di->getNew('test_argument_callback', array( 3, 5 ));
 		$this->assertSame(3 + 5, $eight);
 
 		$this->assertNotSame($di->getNew('test_object'), $di->getNew('test_object'));
@@ -99,12 +99,12 @@ class DiTest extends PHPUnit_Framework_TestCase {
 		$this->assertSame(7, $number);
 		$this->assertSame(4 + 6, $ten);
 
-		list($one, $two, $three) = $di->getManyNew([ 'test_callback', 'test_callback', 'test_callback' ]);
+		list($one, $two, $three) = $di->getManyNew(array( 'test_callback', 'test_callback', 'test_callback' ));
 		$this->assertSame(11, $one);
 		$this->assertSame(12, $two);
 		$this->assertSame(13, $three);
 
-		list($obj1, $obj2) = $di->getManyNew([ 'test_object', 'test_object' ]);
+		list($obj1, $obj2) = $di->getManyNew(array( 'test_object', 'test_object' ));
 		$this->assertNotSame($obj1, $obj2);
 	}
 
@@ -138,7 +138,7 @@ class DiTest extends PHPUnit_Framework_TestCase {
 	public function testGetManyNewInvalidArgumentException_tooMany() {
 		$di = $this->getPopulatedDi();
 
-		$di->getManyNew([ [ 'test_argument_callback', 1, 2 ] ]);
+		$di->getManyNew(array( array( 'test_argument_callback', 1, 2 ) ));
 	}
 
 	/**
@@ -147,7 +147,7 @@ class DiTest extends PHPUnit_Framework_TestCase {
 	public function testGetManyNewInvalidArgumentException_tooFew() {
 		$di = $this->getPopulatedDi();
 
-		$di->getManyNew([ [ ] ]);
+		$di->getManyNew(array( array( ) ));
 	}
 
 	/**
@@ -156,7 +156,7 @@ class DiTest extends PHPUnit_Framework_TestCase {
 	public function testGetManyNewInvalidArgumentException_badKeyType() {
 		$di = $this->getPopulatedDi();
 
-		$di->getManyNew([ 1 ]);
+		$di->getManyNew(array( 1 ));
 	}
 
 	/**
