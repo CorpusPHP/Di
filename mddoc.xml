@@ -1,0 +1,28 @@
+<mddoc>
+
+	<docpage target="README.md" autoloader="psr4" autoloader-root="src" autoloader-root-namespace="Corpus\Di">
+
+        <section title="Corpus Di">
+            <text><![CDATA[
+[![Latest Stable Version](https://poser.pugx.org/corpus/di/v/stable.png)](https://packagist.org/packages/corpus/di)
+[![License](https://poser.pugx.org/corpus/di/license.png)](https://packagist.org/packages/corpus/di)
+[![Build Status](https://travis-ci.org/CorpusPHP/Di.svg?branch=master)](https://travis-ci.org/CorpusPHP/Di)
+
+A Simple Di Container
+]]></text>
+			<section title="Installing">
+				<text><![CDATA[
+Corpus Di is available through Packagist via Composer.
+
+]]></text>
+				<source lang="json">"require": {
+	"corpus/di": "dev-master",
+}
+				</source>
+			</section>
+            <section title="Documentation">
+                <recursivedirectory name="src"/>
+            </section>
+        </section>
+	</docpage>
+</mddoc>
