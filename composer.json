@@ -1,0 +1,14 @@
+{
+	"name": "corpus/di",
+	"description": "Simple Di Container",
+	"license": "MIT",
+	"authors": [{
+		"name": "Jesse Donat",
+		"email": "donatj@gmail.com"
+	}],
+	"autoload": {
+		"psr-4": {
+			"Corpus\\Di\\": "src/"
+		}
+	}
+}
