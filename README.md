@@ -22,7 +22,7 @@ Corpus Di is available through Packagist via Composer.
 
 ### Class: Di \[ `\Corpus\Di` \]
 
-#### Method: `Di`->`getMany($names)`
+#### Method: `Di->getMany($names)`
 
 Retrieve multiple item; cached if existing. For use with list()  
   
@@ -40,7 +40,7 @@ Retrieve multiple item; cached if existing. For use with list()
 
 ---
 
-#### Method: `Di`->`get($name)`
+#### Method: `Di->get($name)`
 
 Retrieve an item; cached if existing  
   
@@ -58,7 +58,7 @@ Retrieve an item; cached if existing
 
 ---
 
-#### Method: `Di`->`getManyNew($data)`
+#### Method: `Di->getManyNew($data)`
 
 Retrieve multiple item. For use with list()  
   
@@ -76,7 +76,7 @@ Retrieve multiple item. For use with list()
 
 ---
 
-#### Method: `Di`->`getNew($name [, $args = array()])`
+#### Method: `Di->getNew($name [, $args = array()])`
 
 Retrieve an item  
   
@@ -95,7 +95,7 @@ Retrieve an item
 
 ---
 
-#### Method: `Di`->`duplicate($src, $dest)`
+#### Method: `Di->duplicate($src, $dest)`
 
 Clone a given value into a second key  
   
@@ -114,7 +114,7 @@ Clone a given value into a second key
 
 ---
 
-#### Method: `Di`->`set($name, $value)`
+#### Method: `Di->set($name, $value)`
 
 Store a value via key to retrieve later  
   
@@ -133,7 +133,7 @@ Store a value via key to retrieve later
 
 ---
 
-#### Method: `Di`->`raw($name)`
+#### Method: `Di->raw($name)`
 
 ##### Parameters:
 
@@ -148,7 +148,7 @@ Store a value via key to retrieve later
 
 Corpus Di Dependency Injection Container
 
-#### Method: `DiInterface`->`getManyNew($data)`
+#### Method: `DiInterface->getManyNew($data)`
 
 Retrieve multiple item. For use with list()  
   
@@ -166,7 +166,7 @@ Retrieve multiple item. For use with list()
 
 ---
 
-#### Method: `DiInterface`->`getMany($names)`
+#### Method: `DiInterface->getMany($names)`
 
 Retrieve multiple item; cached if existing. For use with list()  
   
@@ -184,7 +184,7 @@ Retrieve multiple item; cached if existing. For use with list()
 
 ---
 
-#### Method: `DiInterface`->`getNew($name [, $args = array()])`
+#### Method: `DiInterface->getNew($name [, $args = array()])`
 
 Retrieve an item  
   
@@ -203,7 +203,7 @@ Retrieve an item
 
 ---
 
-#### Method: `DiInterface`->`set($name, $value)`
+#### Method: `DiInterface->set($name, $value)`
 
 Store a value via key to retrieve later  
   
@@ -222,7 +222,7 @@ Store a value via key to retrieve later
 
 ---
 
-#### Method: `DiInterface`->`get($name)`
+#### Method: `DiInterface->get($name)`
 
 Retrieve an item; cached if existing  
   
@@ -240,7 +240,7 @@ Retrieve an item; cached if existing
 
 ---
 
-#### Method: `DiInterface`->`duplicate($src, $dest)`
+#### Method: `DiInterface->duplicate($src, $dest)`
 
 Clone a given value into a second key  
   
@@ -259,7 +259,7 @@ Clone a given value into a second key
 
 ---
 
-#### Method: `DiInterface`->`raw($name)`
+#### Method: `DiInterface->raw($name)`
 
 ##### Parameters:
 
