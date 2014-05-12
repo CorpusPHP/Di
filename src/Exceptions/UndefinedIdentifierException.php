@@ -3,7 +3,7 @@
 namespace Corpus\Di\Exceptions;
 
 /**
- * Class UndefinedIdentifierException
+ * Thrown when attempting to retrieve a key that does not exist.
  *
  * @package Corpus\Di\Exceptions
  */

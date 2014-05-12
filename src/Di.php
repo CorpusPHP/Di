@@ -85,6 +85,12 @@ class Di implements DiInterface {
 		return $this->map[$name] = $value;
 	}
 
+	/**
+	 * @ignore
+	 * @param string $name
+	 * @return mixed
+	 * @throws Exceptions\UndefinedIdentifierException
+	 */
 	public function raw( $name ) {
 		if( isset($this->map[$name]) ) {
 			return $this->map[$name];

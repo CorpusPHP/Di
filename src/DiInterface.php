@@ -65,10 +65,4 @@ interface DiInterface {
 	 */
 	public function duplicate( $src, $dest );
 
-	/**
-	 * @param string $name The name/key to be retrieved
-	 * @return mixed
-	 * @throws Exceptions\UndefinedIdentifierException
-	 */
-	public function raw( $name );
 }
