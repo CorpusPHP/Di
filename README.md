@@ -17,7 +17,7 @@ Corpus Di is available through Packagist via Composer.
 ```json
 {
 	"require": {
-		"corpus/di": "dev-master",
+		"corpus/di": "1.*"
 	}
 }
 ```
