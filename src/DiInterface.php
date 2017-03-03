@@ -57,4 +57,10 @@ interface DiInterface extends ContainerInterface {
 	 */
 	public function duplicate( $src, $dest );
 
+	/**
+	 * @param string $id The name/key to be retrieved
+	 * @return mixed
+	 * @throws Exceptions\UndefinedIdentifierException
+	 */
+	public function raw( $id );
 }
