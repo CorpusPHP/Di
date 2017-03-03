@@ -12,18 +12,18 @@ class Di implements DiInterface {
 	/**
 	 * @var array The map in which to store our objects
 	 */
-	protected $map = array();
+	protected $map = [];
 
 	/**
 	 * @var array The map in which we store called values
 	 */
-	protected $memoizedCallResults = array();
+	protected $memoizedCallResults = [];
 
 	/**
 	 * @inheritDoc
 	 */
 	public function getMany( array $ids ) {
-		$return = array();
+		$return = [];
 		foreach( $ids as $id ) {
 			$return[] = $this->get($id);
 		}
@@ -50,7 +50,7 @@ class Di implements DiInterface {
 	 * @inheritDoc
 	 */
 	public function getManyNew( array $data ) {
-		$return = array();
+		$return = [];
 		foreach( $data as $pair ) {
 			if( is_array($pair) ) {
 				if( count($pair) == 2 ) {
@@ -73,7 +73,7 @@ class Di implements DiInterface {
 	/**
 	 * @inheritDoc
 	 */
-	public function getNew( $id, array $args = array() ) {
+	public function getNew( $id, array $args = [] ) {
 		if( !array_key_exists($id, $this->map) ) {
 			throw new UndefinedIdentifierException("{$id} does not exist.");
 		}

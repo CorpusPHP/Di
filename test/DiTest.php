@@ -35,12 +35,12 @@ class DiTest extends \PHPUnit_Framework_TestCase {
 		});
 
 		$di->set('test_object', function () {
-			return (object)array( 1, 2, 3 );
+			return (object)[ 1, 2, 3 ];
 		});
 
-		$di->set('test_class', 'Corpus\\Test\\Di\\demoValue');
+		$di->set('test_class', demoValue::class);
 
-		$di->set('demo_injection', 'Corpus\\Test\\Di\\demoClass');
+		$di->set('demo_injection', demoClass::class);
 
 		$inst = new demoValue;
 		$di->set('test_class_inst', $inst);
@@ -53,7 +53,7 @@ class DiTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertFalse($di->has('test_object'));
 		$di->set('test_object', function () {
-			return (object)array( 1, 2, 3 );
+			return (object)[ 1, 2, 3 ];
 		});
 		$this->assertTrue($di->has('test_object'));
 	}
@@ -78,24 +78,24 @@ class DiTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertSame($di->get('test_object'), $di->get('test_object'));
 
-		$this->assertInstanceOf('Corpus\\Test\\Di\\demoValue', $di->get('test_class'));
-		$this->assertInstanceOf('Corpus\\Test\\Di\\demoClass', $di->get('demo_injection'));
+		$this->assertInstanceOf(demoValue::class, $di->get('test_class'));
+		$this->assertInstanceOf(demoClass::class, $di->get('demo_injection'));
 
 		$this->assertTrue($di->get('test_class_inst'));
 
-		$ten = $di->getNew('test_argument_callback', array( 4, 6 ));
+		$ten = $di->getNew('test_argument_callback', [ 4, 6 ]);
 		$this->assertSame(4 + 6, $ten);
 	}
 
 	public function testGetMany() {
 		$di = $this->getPopulatedDi();
 
-		list($one, $two, $three) = $di->getMany(array( 'test_callback', 'test_callback', 'test_callback' ));
+		list($one, $two, $three) = $di->getMany([ 'test_callback', 'test_callback', 'test_callback' ]);
 		$this->assertSame(11, $one);
 		$this->assertSame(11, $two);
 		$this->assertSame(11, $three);
 
-		list($obj1, $obj2) = $di->getMany(array( 'test_object', 'test_object' ));
+		list($obj1, $obj2) = $di->getMany([ 'test_object', 'test_object' ]);
 		$this->assertSame($obj1, $obj2);
 	}
 
@@ -106,7 +106,7 @@ class DiTest extends \PHPUnit_Framework_TestCase {
 		// call the same request a second time to test memoization.
 		$this->assertSame(12, $di->getNew('test_callback'), "Memoizing, should not!");
 
-		$eight = $di->getNew('test_argument_callback', array( 3, 5 ));
+		$eight = $di->getNew('test_argument_callback', [ 3, 5 ]);
 		$this->assertSame(3 + 5, $eight);
 
 		$this->assertNotSame($di->getNew('test_object'), $di->getNew('test_object'));
@@ -117,12 +117,12 @@ class DiTest extends \PHPUnit_Framework_TestCase {
 	public function testGetManyNew() {
 		$di = $this->getPopulatedDi();
 
-		list($one, $two, $three) = $di->getManyNew(array( 'test_callback', 'test_callback', 'test_callback' ));
+		list($one, $two, $three) = $di->getManyNew([ 'test_callback', 'test_callback', 'test_callback' ]);
 		$this->assertSame(11, $one);
 		$this->assertSame(12, $two);
 		$this->assertSame(13, $three);
 
-		list($obj1, $obj2) = $di->getManyNew(array( 'test_object', 'test_object' ));
+		list($obj1, $obj2) = $di->getManyNew([ 'test_object', 'test_object' ]);
 		$this->assertNotSame($obj1, $obj2);
 	}
 
@@ -156,7 +156,7 @@ class DiTest extends \PHPUnit_Framework_TestCase {
 	public function testGetManyNewInvalidArgumentException_tooMany() {
 		$di = $this->getPopulatedDi();
 
-		$di->getManyNew(array( array( 'test_argument_callback', 1, 2 ) ));
+		$di->getManyNew([ [ 'test_argument_callback', 1, 2 ] ]);
 	}
 
 	/**
@@ -165,7 +165,7 @@ class DiTest extends \PHPUnit_Framework_TestCase {
 	public function testGetManyNewInvalidArgumentException_tooFew() {
 		$di = $this->getPopulatedDi();
 
-		$di->getManyNew(array( array() ));
+		$di->getManyNew([ [ ] ]);
 	}
 
 	/**
@@ -174,7 +174,7 @@ class DiTest extends \PHPUnit_Framework_TestCase {
 	public function testGetManyNewInvalidArgumentException_badKeyType() {
 		$di = $this->getPopulatedDi();
 
-		$di->getManyNew(array( 1 ));
+		$di->getManyNew([ 1 ]);
 	}
 
 	/**

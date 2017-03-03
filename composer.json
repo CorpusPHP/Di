@@ -2,15 +2,18 @@
 	"name": "corpus/di",
 	"description": "Simple Di Container",
 	"license": "MIT",
-	"authors": [{
-		"name": "Jesse Donat",
-		"email": "donatj@gmail.com"
-	}],
+	"authors": [
+		{
+			"name": "Jesse Donat",
+			"email": "donatj@gmail.com"
+		}
+	],
 	"require": {
+		"php": ">=5.4.0",
 		"psr/container": "~1.0.0"
 	},
-	"require-dev":{
-		"phpunit/phpunit" : "~4.1"
+	"require-dev": {
+		"phpunit/phpunit": "~4.1"
 	},
 	"autoload": {
 		"psr-4": {
