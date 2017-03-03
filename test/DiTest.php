@@ -38,9 +38,9 @@ class DiTest extends \PHPUnit_Framework_TestCase {
 			return (object)[ 1, 2, 3 ];
 		});
 
-		$di->set('test_class', demoValue::class);
+		$di->set('test_class', '\\Corpus\\Test\\Di\\demoValue');
 
-		$di->set('demo_injection', demoClass::class);
+		$di->set('demo_injection', '\\Corpus\\Test\\Di\\demoClass');
 
 		$inst = new demoValue;
 		$di->set('test_class_inst', $inst);
@@ -78,8 +78,8 @@ class DiTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertSame($di->get('test_object'), $di->get('test_object'));
 
-		$this->assertInstanceOf(demoValue::class, $di->get('test_class'));
-		$this->assertInstanceOf(demoClass::class, $di->get('demo_injection'));
+		$this->assertInstanceOf('\\Corpus\\Test\\Di\\demoValue', $di->get('test_class'));
+		$this->assertInstanceOf('\\Corpus\\Test\\Di\\demoClass', $di->get('demo_injection'));
 
 		$this->assertTrue($di->get('test_class_inst'));
 
@@ -165,7 +165,7 @@ class DiTest extends \PHPUnit_Framework_TestCase {
 	public function testGetManyNewInvalidArgumentException_tooFew() {
 		$di = $this->getPopulatedDi();
 
-		$di->getManyNew([ [ ] ]);
+		$di->getManyNew([ [] ]);
 	}
 
 	/**
