@@ -2,6 +2,7 @@
 
 namespace Corpus\Di;
 
+use Psr\Container\ContainerInterface;
 
 /**
  * Corpus Di Dependency Injection Container
@@ -10,7 +11,7 @@ namespace Corpus\Di;
  * @author Jesse Donat
  * @package Corpus\Di
  */
-interface DiInterface {
+interface DiInterface extends ContainerInterface {
 	/**
 	 * Retrieve multiple item. For use with list()
 	 *
@@ -46,15 +47,6 @@ interface DiInterface {
 	 * @return mixed
 	 */
 	public function set( $name, $value );
-
-	/**
-	 * Retrieve an item; cached if existing
-	 *
-	 * @param string $name The name/key of the item
-	 * @return mixed
-	 * @throws Exceptions\UndefinedIdentifierException
-	 */
-	public function get( $name );
 
 	/**
 	 * Clone a given value into a second key

@@ -1,15 +1,26 @@
 <?php
 
+namespace Corpus\Test\Di;
+
 use Corpus\Di\Di;
 
-class DiTest extends PHPUnit_Framework_TestCase {
+class demoClass {
+
+	public function __construct( demoValue $test_class ) {
+	}
+}
+
+class demoValue {
+
+	public function __invoke() {
+		return true;
+	}
+}
+
+class DiTest extends \PHPUnit_Framework_TestCase {
 
 	protected function getPopulatedDi() {
 		$di = new Di();
-
-		// test scalars
-		$di->set('test_scalar', 7);
-		$di->set('test_scalar2', "my awesome string");
 
 		// test callbacks
 		$int = 10;
@@ -27,15 +38,39 @@ class DiTest extends PHPUnit_Framework_TestCase {
 			return (object)array( 1, 2, 3 );
 		});
 
+		$di->set('test_class', 'Corpus\\Test\\Di\\demoValue');
+
+		$di->set('demo_injection', 'Corpus\\Test\\Di\\demoClass');
+
+		$inst = new demoValue;
+		$di->set('test_class_inst', $inst);
+
 		return $di;
+	}
+
+	public function testHas() {
+		$di = new Di();
+
+		$this->assertFalse($di->has('test_object'));
+		$di->set('test_object', function () {
+			return (object)array( 1, 2, 3 );
+		});
+		$this->assertTrue($di->has('test_object'));
+	}
+
+	/**
+	 * @expectedException \Corpus\Di\Exceptions\InvalidArgumentException
+	 */
+	public function testInvalidEntries() {
+		$di = new Di();
+
+		// test scalars
+		$di->set('test_scalar', 7);
+		$di->set('test_scalar2', "my awesome string");
 	}
 
 	public function testGet() {
 		$di = $this->getPopulatedDi();
-
-		$this->assertSame(7, $di->get('test_scalar'));
-		$this->assertSame("my awesome string", $di->get('test_scalar2'));
-
 
 		$this->assertSame(11, $di->get('test_callback'));
 		// call the same request a second time to test memoization.
@@ -43,15 +78,17 @@ class DiTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertSame($di->get('test_object'), $di->get('test_object'));
 
+		$this->assertInstanceOf('Corpus\\Test\\Di\\demoValue', $di->get('test_class'));
+		$this->assertInstanceOf('Corpus\\Test\\Di\\demoClass', $di->get('demo_injection'));
+
+		$this->assertTrue($di->get('test_class_inst'));
+
+		$ten = $di->getNew('test_argument_callback', array( 4, 6 ));
+		$this->assertSame(4 + 6, $ten);
 	}
 
 	public function testGetMany() {
 		$di = $this->getPopulatedDi();
-
-		// test scalars
-		list($number, $string) = $di->getMany(array( 'test_scalar', 'test_scalar2' ));
-		$this->assertSame(7, $number);
-		$this->assertSame("my awesome string", $string);
 
 		list($one, $two, $three) = $di->getMany(array( 'test_callback', 'test_callback', 'test_callback' ));
 		$this->assertSame(11, $one);
@@ -65,11 +102,6 @@ class DiTest extends PHPUnit_Framework_TestCase {
 	public function testGetNew() {
 		$di = $this->getPopulatedDi();
 
-		// test scalars
-		$this->assertSame(7, $di->getNew('test_scalar'));
-		$this->assertSame("my awesome string", $di->getNew('test_scalar2'));
-
-
 		$this->assertSame(11, $di->getNew('test_callback'));
 		// call the same request a second time to test memoization.
 		$this->assertSame(12, $di->getNew('test_callback'), "Memoizing, should not!");
@@ -80,24 +112,10 @@ class DiTest extends PHPUnit_Framework_TestCase {
 		$this->assertNotSame($di->getNew('test_object'), $di->getNew('test_object'));
 		// make sure we're getting a new instance
 		$this->assertNotSame($di->get('test_object'), $di->getNew('test_object'));
-
 	}
 
 	public function testGetManyNew() {
 		$di = $this->getPopulatedDi();
-
-		// test scalars
-		list($number, $string) = $di->getManyNew(array( 'test_scalar', 'test_scalar2' ));
-		$this->assertSame(7, $number);
-		$this->assertSame("my awesome string", $string);
-
-		list($number, $string) = $di->getManyNew(array( array( 'test_scalar' ), 'test_scalar2' ));
-		$this->assertSame(7, $number);
-		$this->assertSame("my awesome string", $string);
-
-		list($number, $ten) = $di->getManyNew(array( array( 'test_scalar' ), array( 'test_argument_callback', array( 4, 6 ) ) ));
-		$this->assertSame(7, $number);
-		$this->assertSame(4 + 6, $ten);
 
 		list($one, $two, $three) = $di->getManyNew(array( 'test_callback', 'test_callback', 'test_callback' ));
 		$this->assertSame(11, $one);
@@ -112,7 +130,7 @@ class DiTest extends PHPUnit_Framework_TestCase {
 		$di = $this->getPopulatedDi();
 
 		$di->duplicate('test_object', 'duplicate_object');
-		$this->assertSame( $di->raw('test_object'), $di->raw('duplicate_object') );
+		$this->assertSame($di->raw('test_object'), $di->raw('duplicate_object'));
 
 		$obj1 = $di->get('test_object');
 		$obj2 = $di->get('duplicate_object');
@@ -133,7 +151,7 @@ class DiTest extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @expectedException \InvalidArgumentException
+	 * @expectedException \Corpus\Di\Exceptions\InvalidArgumentException
 	 */
 	public function testGetManyNewInvalidArgumentException_tooMany() {
 		$di = $this->getPopulatedDi();
@@ -142,16 +160,16 @@ class DiTest extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * @expectedException \InvalidArgumentException
+	 * @expectedException \Corpus\Di\Exceptions\InvalidArgumentException
 	 */
 	public function testGetManyNewInvalidArgumentException_tooFew() {
 		$di = $this->getPopulatedDi();
 
-		$di->getManyNew(array( array( ) ));
+		$di->getManyNew(array( array() ));
 	}
 
 	/**
-	 * @expectedException \InvalidArgumentException
+	 * @expectedException \Corpus\Di\Exceptions\InvalidArgumentException
 	 */
 	public function testGetManyNewInvalidArgumentException_badKeyType() {
 		$di = $this->getPopulatedDi();
