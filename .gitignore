@@ -2,3 +2,4 @@ phpunit.xml
 vendor/
 clover.xml
 .idea/
+composer.lock
