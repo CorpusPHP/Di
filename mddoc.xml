@@ -3,14 +3,11 @@
 	<docpage target="README.md" autoloader="psr4" autoloader-root="src" autoloader-root-namespace="Corpus\Di">
 
         <section title="Corpus Di">
-            <text><![CDATA[
-[![Latest Stable Version](https://poser.pugx.org/corpus/di/v/stable.png)](https://packagist.org/packages/corpus/di)
-[![License](https://poser.pugx.org/corpus/di/license.png)](https://packagist.org/packages/corpus/di)
-[![Build Status](https://travis-ci.org/CorpusPHP/Di.svg?branch=master)](https://travis-ci.org/CorpusPHP/Di)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/CorpusPHP/Di/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/CorpusPHP/Di/?branch=master)
-
-A Simple PSR-11 Complaint Di Container
-]]></text>
+			<badge-poser type="version" />
+			<badge-poser type="license" />
+			<badge-travis name="CorpusPHP/Di" />
+			<badge-scrutinizer name="CorpusPHP/Di" type="quality"/>
+            <text>A Simple PSR-11 Complaint Di Container</text>
 			<section title="Requirements">
 				<composer-requires/>
 			</section>

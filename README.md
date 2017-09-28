@@ -1,12 +1,12 @@
 # Corpus Di
 
-[![Latest Stable Version](https://poser.pugx.org/corpus/di/v/stable.png)](https://packagist.org/packages/corpus/di)
-[![License](https://poser.pugx.org/corpus/di/license.png)](https://packagist.org/packages/corpus/di)
+[![Latest Stable Version](https://poser.pugx.org/corpus/di/version)](https://packagist.org/packages/corpus/di)
+[![License](https://poser.pugx.org/corpus/di/license)](https://packagist.org/packages/corpus/di)
 [![Build Status](https://travis-ci.org/CorpusPHP/Di.svg?branch=master)](https://travis-ci.org/CorpusPHP/Di)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/CorpusPHP/Di/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/CorpusPHP/Di/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/CorpusPHP/Di/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/CorpusPHP/Di)
+
 
 A Simple PSR-11 Complaint Di Container
-
 
 ## Requirements
 
