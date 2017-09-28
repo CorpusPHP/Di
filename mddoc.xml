@@ -9,21 +9,13 @@
 [![Build Status](https://travis-ci.org/CorpusPHP/Di.svg?branch=master)](https://travis-ci.org/CorpusPHP/Di)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/CorpusPHP/Di/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/CorpusPHP/Di/?branch=master)
 
-A Simple Di Container
+A Simple PSR-11 Complaint Di Container
 ]]></text>
 			<section title="Requirements">
-				<text>- PHP 5.3.0+</text>
+				<composer-requires/>
 			</section>
 			<section title="Installing">
-				<text><![CDATA[
-Corpus Di is available through Packagist via Composer.
-
-]]></text>
-				<source lang="json">{
-	"require": {
-		"corpus/di": "1.*"
-	}
-}</source>
+				<composer-install/>
 			</section>
 			<section title="Usage">
 				<text>Getting started with Di the three most important methods follow.
@@ -64,7 +56,6 @@ list($foo, $bar) = $di->getMany([ 'foo', 'bar' ]);
 list($baz, $baz2) = $di->getManyNew([ ['baz', ['corge']], ['baz', ['grault']] ]);
 
 ]]></source>
-			<text>Note: [5.4 array syntax](http://us3.php.net/manual/en/language.types.array.php) was used for terseness in this example but 5.3 is completely supported.</text>
 			</section>
             <section title="Documentation">
 				<file name="src/Di.php"/>

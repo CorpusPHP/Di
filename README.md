@@ -5,22 +5,20 @@
 [![Build Status](https://travis-ci.org/CorpusPHP/Di.svg?branch=master)](https://travis-ci.org/CorpusPHP/Di)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/CorpusPHP/Di/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/CorpusPHP/Di/?branch=master)
 
-A Simple Di Container
+A Simple PSR-11 Complaint Di Container
+
 
 ## Requirements
 
-- PHP 5.4.0+
+- **php**: >=5.4.0
+- **psr/container**: ~1.0.0
 
 ## Installing
 
-Corpus Di is available through Packagist via Composer.
+Install the latest version with:
 
-```json
-{
-	"require": {
-		"corpus/di": "1.*"
-	}
-}
+```bash
+composer require 'corpus/di'
 ```
 
 ## Usage
@@ -67,122 +65,104 @@ list($baz, $baz2) = $di->getManyNew([ ['baz', ['corge']], ['baz', ['grault']] ])
 
 ```
 
-Note: [5.4 array syntax](http://us3.php.net/manual/en/language.types.array.php) was used for terseness in this example but 5.3 is completely supported.
-
 ## Documentation
 
-### Class: Di \[ `\Corpus\Di` \]
+### Class: \Corpus\Di\Di
 
-#### Method: `Di->getMany($names)`
+#### Method: Di->getMany
 
-Retrieve multiple item; cached if existing. For use with list()  
-  
+```php
+function getMany($ids)
+```
 
-
-##### Parameters:
-
-- ***string[]*** `$names` - The names/keys of the items
-
-
-##### Returns:
-
-- ***mixed[]***
-
+Retrieve multiple item; cached if existing. For use with list()
 
 ---
 
-#### Method: `Di->get($name)`
+#### Method: Di->get
 
-Retrieve an item; cached if existing  
-  
-
-
-##### Parameters:
-
-- ***string*** `$name` - The name/key of the item
-
-
-##### Returns:
-
-- ***mixed***
-
+```php
+function get($id)
+```
 
 ---
 
-#### Method: `Di->getManyNew($data)`
+#### Method: Di->getManyNew
 
-Retrieve multiple item. For use with list()  
-  
+```php
+function getManyNew($data)
+```
 
-
-##### Parameters:
-
-- ***array[]*** `$data` - The array of (names/keys / argument) pair tuple of the items
-
-
-##### Returns:
-
-- ***mixed[]***
-
+Retrieve multiple item. For use with list()
 
 ---
 
-#### Method: `Di->getNew($name [, $args = array()])`
+#### Method: Di->getNew
 
-Retrieve an item  
-  
+```php
+function getNew($id [, $args = array()])
+```
 
-
-##### Parameters:
-
-- ***string*** `$name` - The name/key of the item
-- ***mixed[]*** `$args`
-
-
-##### Returns:
-
-- ***mixed***
-
+Retrieve an item
 
 ---
 
-#### Method: `Di->duplicate($src, $dest)`
+#### Method: Di->duplicate
 
-Clone a given value into a second key  
-  
+```php
+function duplicate($src, $dest)
+```
 
-
-##### Parameters:
-
-- ***string*** `$src` - The source
-- ***string*** `$dest` - The destination
-
-
-##### Returns:
-
-- ***mixed***
-
+Clone a given value into a second key
 
 ---
 
-#### Method: `Di->set($name, $value)`
+#### Method: Di->set
 
-Store a value via key to retrieve later  
-  
+```php
+function set($id, $value)
+```
 
+Store a value via key to retrieve later
 
-##### Parameters:
+---
 
-- ***string*** `$name` - The name/key of the item
-- ***mixed*** `$value` - The value to store
+#### Method: Di->has
 
+```php
+function has($id)
+```
 
-##### Returns:
+---
 
-- ***mixed***
+#### Method: Di->raw
 
+```php
+function raw($id)
+```
 
-### Class: UndefinedIdentifierException \[ `\Corpus\Di\Exceptions` \]
+---
+
+#### Method: Di->constructFromReflectiveParams
+
+```php
+function constructFromReflectiveParams($className [, $initials = array()])
+```
+
+Use reflection to execute a classes constructor with auto-populated parameters
+
+---
+
+#### Method: Di->callFromReflectiveParams
+
+```php
+function callFromReflectiveParams($callable [, $initials = array()])
+```
+
+Use reflection to execute a callable with auto-populated parameters
+
+### Class: \Corpus\Di\Exceptions\UndefinedIdentifierException
+
+Class UndefinedIdentifierException
 
 Thrown when attempting to retrieve a key that does not exist.
-
