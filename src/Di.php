@@ -7,8 +7,6 @@ use Corpus\Di\Exceptions\UndefinedIdentifierException;
 
 class Di implements DiInterface {
 
-	use ReflectiveDiMethodParameterCallTrait;
-
 	/**
 	 * @var array The map in which to store our objects
 	 */
@@ -88,7 +86,7 @@ class Di implements DiInterface {
 				$result = $entry;
 				break;
 			case class_exists($entry):
-				$result = $this->constructInstanceFromReflectiveDiMethodParams($this, $entry, $args);
+				$result = $this->constructFromReflectiveParams($entry, $args);
 				break;
 			default:
 				throw new \RuntimeException;
@@ -137,5 +135,52 @@ class Di implements DiInterface {
 		}
 
 		throw new UndefinedIdentifierException("{$id} does not exist.");
+	}
+
+	/**
+	 * @param \ReflectionMethod|\ReflectionFunction $ref
+	 * @param array                                 $initials
+	 * @return array
+	 */
+	protected function getReflectiveDiMethodParams( $ref, array $initials = [] ) {
+		/** @var \ReflectionParameter[] $cParams */
+		$cParams   = array_slice($ref->getParameters(), count($initials));
+		$arguments = $initials;
+		foreach( $cParams as $cParam ) {
+			$arguments[] = $this->get($cParam->getName());
+		}
+
+		return $arguments;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function constructFromReflectiveParams( $className, array $initials = [] ) {
+		$inst = new \ReflectionClass($className);
+		$ref  = $inst->getConstructor();
+
+		if( $ref instanceof \ReflectionMethod ) {
+			$args = $this->getReflectiveDiMethodParams($ref, $initials);
+
+			return $inst->newInstanceArgs($args);
+		}
+
+		return new $className;
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function callFromReflectiveParams( callable $callable, array $initials = [] ) {
+		if( is_array($callable) ) {
+			$ref  = new \ReflectionMethod($callable[0], $callable[1]);
+			$args = $this->getReflectiveDiMethodParams($ref, $initials);
+		} else {
+			$ref  = new \ReflectionFunction($callable);
+			$args = $this->getReflectiveDiMethodParams($ref, $initials);
+		}
+
+		return call_user_func_array($callable, $args);
 	}
 }

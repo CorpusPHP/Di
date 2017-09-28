@@ -63,4 +63,22 @@ interface DiInterface extends ContainerInterface {
 	 * @throws Exceptions\UndefinedIdentifierException
 	 */
 	public function raw( $id );
+
+	/**
+	 * Use reflection to execute a classes constructor with auto-populated parameters
+	 *
+	 * @param string $className
+	 * @param array  $initials
+	 * @return object
+	 */
+	public function constructFromReflectiveParams( $className, array $initials = [] );
+
+	/**
+	 * Use reflection to execute a callable with auto-populated parameters
+	 *
+	 * @param callable $callable
+	 * @param array    $initials
+	 * @return mixed
+	 */
+	public function callFromReflectiveParams( callable $callable, array $initials = [] );
 }
