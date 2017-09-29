@@ -31,7 +31,7 @@ Getting started with Di the three most important methods follow.
 ```php
 <?php
 
-require('vendor/autoload.php');
+require 'vendor/autoload.php';
 
 $di = new \Corpus\Di\Di();
 
@@ -60,9 +60,14 @@ $baz2 = $di->getNew('baz', [ 'grault' ]);
 list($foo, $bar) = $di->getMany([ 'foo', 'bar' ]);
 
 // getManyNew lets you retreive multiple new values at once, providing for arguments.
-list($baz, $baz2) = $di->getManyNew([ ['baz', ['corge']], ['baz', ['grault']] ]);
+list($baz, $baz2) = $di->getManyNew([ [ 'baz', [ 'corge' ] ], [ 'baz', [ 'grault' ] ] ]);
 
+// callFromReflectiveParams lets you execute a callable reflectively using the parameter name as the key
+$di->callFromReflectiveParams(function ( Foo $foo, Bar $bar ) { /* ... */ });
 
+// constructFromReflectiveParams works like callFromReflectiveParams except on a constructor,
+// returning an instance of the requested class
+$bazInst = $di->constructFromReflectiveParams("Baz" /* Baz::class works in 5.5+ */);
 ```
 
 ## Documentation

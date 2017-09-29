@@ -19,40 +19,7 @@
 - The `set` method is used to set either the item to return or a lambda to lazily construct it, optionally taking constructor arguments.
 - The `get` method is used to retrieve values with memoization after the initial lazy loading.
 - The `getNew` is used to invoke the lazy loading creation lambda every call, optionally taking an array of constructor arguments as a second parameter.</text>
-				<source lang="php"><![CDATA[<?php
-
-require('vendor/autoload.php');
-
-$di = new \Corpus\Di\Di();
-
-// Eager Loading
-$di->set('foo', new Foo());
-
-// Lazy Loading
-$di->set('bar', function () {
-	return new Bar();
-});
-
-// Constructor Parameters
-$di->set('baz', function ( $qux ) {
-	return new Bar($qux);
-});
-
-// Value is memoized, new Bar() is only called once at first `get`.
-$bar  = $di->get('bar');
-$bar2 = $di->get('bar');
-
-// Calling getNew explicitly avoids the memoization. Constructor params passed as array.
-$baz  = $di->getNew('baz', [ 'corge' ]);
-$baz2 = $di->getNew('baz', [ 'grault' ]);
-
-// getMany lets you retreive multiple memoized values at once.
-list($foo, $bar) = $di->getMany([ 'foo', 'bar' ]);
-
-// getManyNew lets you retreive multiple new values at once, providing for arguments.
-list($baz, $baz2) = $di->getManyNew([ ['baz', ['corge']], ['baz', ['grault']] ]);
-
-]]></source>
+				<source name="example/example.php" lang="php"/>
 			</section>
             <section title="Documentation">
 				<file name="src/Di.php"/>
