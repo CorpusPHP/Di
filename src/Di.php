@@ -81,20 +81,14 @@ class Di implements DiInterface {
 
 		switch( true ) {
 			case is_callable($entry):
-				$result = $this->callFromReflectiveParams($entry, $args);
-				break;
+				return $this->callFromReflectiveParams($entry, $args);
 			case is_object($entry):
-				$result = $entry;
-				break;
+				return $entry;
 			case class_exists($entry):
-				$result = $this->constructFromReflectiveParams($entry, $args);
-				break;
-			default:
-				throw new RuntimeException('unhandled di entry type');
-				break;
+				return $this->constructFromReflectiveParams($entry, $args);
 		}
 
-		return $result;
+		throw new RuntimeException('unhandled di entry type');
 	}
 
 	/**
