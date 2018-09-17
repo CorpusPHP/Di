@@ -3,6 +3,7 @@
 namespace Corpus\Di;
 
 use Corpus\Di\Exceptions\InvalidArgumentException;
+use Corpus\Di\Exceptions\RuntimeException;
 use Corpus\Di\Exceptions\UndefinedIdentifierException;
 
 class Di implements DiInterface {
@@ -20,7 +21,7 @@ class Di implements DiInterface {
 	/**
 	 * @inheritDoc
 	 */
-	public function getMany( array $ids ) {
+	public function getMany( array $ids ) : array {
 		$return = [];
 		foreach( $ids as $id ) {
 			$return[] = $this->get($id);
@@ -47,7 +48,7 @@ class Di implements DiInterface {
 	/**
 	 * @inheritDoc
 	 */
-	public function getManyNew( array $data ) {
+	public function getManyNew( array $data ) : array {
 		$return = [];
 		foreach( $data as $pair ) {
 			if( is_array($pair) ) {
@@ -80,7 +81,7 @@ class Di implements DiInterface {
 
 		switch( true ) {
 			case is_callable($entry):
-				$result = call_user_func_array($entry, $args);
+				$result = $this->callFromReflectiveParams($entry, $args);
 				break;
 			case is_object($entry):
 				$result = $entry;
@@ -89,7 +90,7 @@ class Di implements DiInterface {
 				$result = $this->constructFromReflectiveParams($entry, $args);
 				break;
 			default:
-				throw new \RuntimeException;
+				throw new RuntimeException('unhandled di entry type');
 				break;
 		}
 
@@ -99,14 +100,14 @@ class Di implements DiInterface {
 	/**
 	 * @inheritDoc
 	 */
-	public function duplicate( $src, $dest ) {
+	public function duplicate( string $src, string $dest ) {
 		return $this->set($dest, $this->raw($src));
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public function set( $id, $value ) {
+	public function set( string $id, $value ) {
 		switch( true ) {
 			case is_object($value):
 			case is_callable($value):
@@ -129,7 +130,7 @@ class Di implements DiInterface {
 	/**
 	 * @inheritDoc
 	 */
-	public function raw( $id ) {
+	public function raw( string $id ) {
 		if( isset($this->map[$id]) ) {
 			return $this->map[$id];
 		}
@@ -138,8 +139,7 @@ class Di implements DiInterface {
 	}
 
 	/**
-	 * @param \ReflectionMethod|\ReflectionFunction $ref
-	 * @param array                                 $initials
+	 * @param \ReflectionFunction|\ReflectionMethod $ref
 	 * @return array
 	 */
 	protected function getReflectiveDiMethodParams( $ref, array $initials = [] ) {
@@ -147,7 +147,9 @@ class Di implements DiInterface {
 		$cParams   = array_slice($ref->getParameters(), count($initials));
 		$arguments = $initials;
 		foreach( $cParams as $cParam ) {
-			$arguments[] = $this->get($cParam->getName());
+			if( !$cParam->isOptional() ) {
+				$arguments[] = $this->get($cParam->getName());
+			}
 		}
 
 		return $arguments;
@@ -156,9 +158,13 @@ class Di implements DiInterface {
 	/**
 	 * @inheritdoc
 	 */
-	public function constructFromReflectiveParams( $className, array $initials = [] ) {
-		$inst = new \ReflectionClass($className);
-		$ref  = $inst->getConstructor();
+	public function constructFromReflectiveParams( string $className, array $initials = [] ) {
+		try {
+			$inst = new \ReflectionClass($className);
+			$ref  = $inst->getConstructor();
+		} catch( \ReflectionException $ex ) {
+			throw new InvalidArgumentException('reflection of callable failed', 3, $ex);
+		}
 
 		if( $ref instanceof \ReflectionMethod ) {
 			$args = $this->getReflectiveDiMethodParams($ref, $initials);
@@ -173,12 +179,22 @@ class Di implements DiInterface {
 	 * @inheritdoc
 	 */
 	public function callFromReflectiveParams( callable $callable, array $initials = [] ) {
-		if( is_array($callable) ) {
-			$ref  = new \ReflectionMethod($callable[0], $callable[1]);
-			$args = $this->getReflectiveDiMethodParams($ref, $initials);
-		} else {
-			$ref  = new \ReflectionFunction($callable);
-			$args = $this->getReflectiveDiMethodParams($ref, $initials);
+		try {
+			if( is_array($callable) ) {
+				$ref  = new \ReflectionMethod($callable[0], $callable[1]);
+				$args = $this->getReflectiveDiMethodParams($ref, $initials);
+			} elseif( is_string($callable) || $callable instanceof \closure ) {
+				$ref  = new \ReflectionFunction($callable);
+				$args = $this->getReflectiveDiMethodParams($ref, $initials);
+			} elseif( is_object($callable) && method_exists($callable, '__invoke') ) {
+				$ref  = new \ReflectionClass($callable);
+				$meth = $ref->getMethod('__invoke');
+				$args = $this->getReflectiveDiMethodParams($meth, $initials);
+			} else {
+				throw new InvalidArgumentException('reflection of callable failed', 1);
+			}
+		} catch( \ReflectionException $ex ) {
+			throw new InvalidArgumentException('reflection of callable failed', 2, $ex);
 		}
 
 		return call_user_func_array($callable, $args);
