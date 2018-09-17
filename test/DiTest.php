@@ -3,29 +3,44 @@
 namespace Corpus\Test\Di;
 
 use Corpus\Di\Di;
+use Corpus\Di\DiInterface;
+use PHPUnit\Framework\TestCase;
 
 class demoClass {
+	public function __construct(demoValue $test_class){
 
-	public function __construct( demoValue $test_class ) {
 	}
 }
 
 class demoValue {
-
-	public function __invoke() {
+	public function __invoke(){
 		return true;
 	}
 }
 
-class DiTest extends \PHPUnit_Framework_TestCase {
+class demoInvokeWithParam {
+	public $test_class;
 
-	protected function getPopulatedDi() {
+	public function __invoke($test_class){
+		$this->test_class = $test_class;
+
+		return 21;
+	}
+}
+
+class DiTest extends TestCase {
+
+	protected function getPopulatedDi() : DiInterface {
 		$di = new Di();
 
 		// test callbacks
 		$int = 10;
-		$di->set('test_callback', function () use ( &$int ) {
-			$int += 1;
+		$di->set('test_callback', function (int $val = null) use ( &$int ) {
+			if($val !== null) {
+				$int = $val;
+			}else {
+				$int += 1;
+			}
 
 			return $int;
 		});
@@ -38,9 +53,11 @@ class DiTest extends \PHPUnit_Framework_TestCase {
 			return (object)[ 1, 2, 3 ];
 		});
 
-		$di->set('test_class', '\\Corpus\\Test\\Di\\demoValue');
+		$di->set('test_class', demoValue::class);
+		$di->set('demo_injection', demoClass::class);
 
-		$di->set('demo_injection', '\\Corpus\\Test\\Di\\demoClass');
+		$di->set('demoInvokeWithParam', new demoInvokeWithParam);
+		$di->set('demoInvokeWithParamAsString', demoInvokeWithParam::class);
 
 		$inst = new demoValue;
 		$di->set('test_class_inst', $inst);
@@ -48,7 +65,67 @@ class DiTest extends \PHPUnit_Framework_TestCase {
 		return $di;
 	}
 
-	public function testHas() {
+	public function testReflectiveInjection() {
+		$di = $this->getPopulatedDi();
+
+		$di->set('test_reflective_injection', function ( demoValue $test_class, demoClass $demo_injection ) {
+			$this->assertInstanceOf(demoValue::class, $test_class);
+			$this->assertInstanceOf(demoClass::class, $demo_injection);
+
+			return 7;
+		});
+
+		$this->assertSame(7, $di->get('test_reflective_injection'));
+	}
+
+	public function testReflectionInjectionOnInvokable() {
+		$di = $this->getPopulatedDi();
+
+		$this->assertSame(21, $di->get('demoInvokeWithParam'), 'invoking a stored instance should call __invoke');
+		$this->assertInstanceOf(demoInvokeWithParam::class, $di->get('demoInvokeWithParamAsString'), 'invoking the ::class string should INSTANTIATE, not __invoke');
+	}
+
+	/**
+	 * @expectedException \Corpus\Di\Exceptions\UndefinedIdentifierException
+	 */
+	public function testReflectiveInjection_undefinedException() {
+		$di = $this->getPopulatedDi();
+
+		$di->set('test_reflective_injection', function ( demoValue $test_class, demoClass $demo_injection, $noExist ) { return 7; });
+		$di->get('test_reflective_injection');
+	}
+
+	public function testReflectiveInjectionWithGetNew(){
+		$di = $this->getPopulatedDi();
+
+		$di->set('test_reflective_injection2', function ( $ok, demoValue $test_class, demoClass $demo_injection ) {
+			$this->assertTrue($ok);
+			$this->assertInstanceOf(demoValue::class, $test_class);
+			$this->assertInstanceOf(demoClass::class, $demo_injection);
+
+			return 7;
+		});
+
+		$this->assertSame(7, $di->getNew('test_reflective_injection2', [true]));
+	}
+
+	public function testReflectiveInjectionWithGetNewOfDefinedEntries(){
+		$di = $this->getPopulatedDi();
+
+		$di->set('test_reflective_injection', function ( demoValue $test_class, demoClass $demo_injection ) {
+			$this->assertInstanceOf(demoValue::class, $test_class);
+			$this->assertInstanceOf(demoClass::class, $demo_injection);
+
+			return [$test_class, $demo_injection];
+		});
+
+		$test = new demoValue;
+		$demo = new demoClass($test);
+
+		$this->assertSame([$test, $demo], $di->getNew('test_reflective_injection', [$test, $demo]));
+	}
+
+	public function testHas(){
 		$di = new Di();
 
 		$this->assertFalse($di->has('test_object'));
@@ -61,7 +138,7 @@ class DiTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @expectedException \Corpus\Di\Exceptions\InvalidArgumentException
 	 */
-	public function testInvalidEntries() {
+	public function testInvalidEntries(){
 		$di = new Di();
 
 		// test scalars
@@ -78,24 +155,25 @@ class DiTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertSame($di->get('test_object'), $di->get('test_object'));
 
-		$this->assertInstanceOf('\\Corpus\\Test\\Di\\demoValue', $di->get('test_class'));
-		$this->assertInstanceOf('\\Corpus\\Test\\Di\\demoClass', $di->get('demo_injection'));
+		$this->assertInstanceOf(demoValue::class, $di->get('test_class'));
+		$this->assertInstanceOf(demoClass::class, $di->get('demo_injection'));
 
 		$this->assertTrue($di->get('test_class_inst'));
 
 		$ten = $di->getNew('test_argument_callback', [ 4, 6 ]);
 		$this->assertSame(4 + 6, $ten);
+
 	}
 
 	public function testGetMany() {
 		$di = $this->getPopulatedDi();
 
-		list($one, $two, $three) = $di->getMany([ 'test_callback', 'test_callback', 'test_callback' ]);
+		[$one, $two, $three] = $di->getMany([ 'test_callback', 'test_callback', 'test_callback' ]);
 		$this->assertSame(11, $one);
 		$this->assertSame(11, $two);
 		$this->assertSame(11, $three);
 
-		list($obj1, $obj2) = $di->getMany([ 'test_object', 'test_object' ]);
+		[$obj1, $obj2] = $di->getMany([ 'test_object', 'test_object' ]);
 		$this->assertSame($obj1, $obj2);
 	}
 
@@ -112,17 +190,23 @@ class DiTest extends \PHPUnit_Framework_TestCase {
 		$this->assertNotSame($di->getNew('test_object'), $di->getNew('test_object'));
 		// make sure we're getting a new instance
 		$this->assertNotSame($di->get('test_object'), $di->getNew('test_object'));
+
 	}
 
 	public function testGetManyNew() {
 		$di = $this->getPopulatedDi();
 
-		list($one, $two, $three) = $di->getManyNew([ 'test_callback', 'test_callback', 'test_callback' ]);
+		[$one, $two, $three] = $di->getManyNew([ 'test_callback', 'test_callback', 'test_callback' ]);
 		$this->assertSame(11, $one);
 		$this->assertSame(12, $two);
 		$this->assertSame(13, $three);
 
-		list($obj1, $obj2) = $di->getManyNew([ 'test_object', 'test_object' ]);
+		[ $four, $five, $six ] = $di->getManyNew([ [ 'test_callback' ], [ 'test_callback', [] ], [ 'test_callback', [ 1024 ] ] ]);
+		$this->assertSame(14, $four);
+		$this->assertSame(15, $five);
+		$this->assertSame(1024, $six, 'value should match that set in the call arguments');
+
+		[$obj1, $obj2] = $di->getManyNew([ 'test_object', 'test_object' ]);
 		$this->assertNotSame($obj1, $obj2);
 	}
 
@@ -130,7 +214,7 @@ class DiTest extends \PHPUnit_Framework_TestCase {
 		$di = $this->getPopulatedDi();
 
 		$di->duplicate('test_object', 'duplicate_object');
-		$this->assertSame($di->raw('test_object'), $di->raw('duplicate_object'));
+		$this->assertSame( $di->raw('test_object'), $di->raw('duplicate_object') );
 
 		$obj1 = $di->get('test_object');
 		$obj2 = $di->get('duplicate_object');
@@ -165,7 +249,7 @@ class DiTest extends \PHPUnit_Framework_TestCase {
 	public function testGetManyNewInvalidArgumentException_tooFew() {
 		$di = $this->getPopulatedDi();
 
-		$di->getManyNew([ [] ]);
+		$di->getManyNew([ [ ] ]);
 	}
 
 	/**
@@ -207,5 +291,41 @@ class DiTest extends \PHPUnit_Framework_TestCase {
 		$di->raw('undefined_key');
 	}
 
+	public function testCallFromReflectiveParams_callableArray(){
+		$di = $this->getPopulatedDi();
+
+		$ok = new class($this) {
+			public $that;
+			public function __construct(DiTest $that){
+				$this->that = $that;
+			}
+			public $success = false;
+			public function soup($test_class){
+				$this->success = true;
+				$this->that->assertInstanceOf(demoValue::class, $test_class);
+
+				return "foo-bar";
+			}
+		};
+
+		$this->assertSame("foo-bar", $di->callFromReflectiveParams([$ok, 'soup']));
+		$this->assertTrue($ok->success);
+	}
+
+	/**
+	 * @expectedException \Corpus\Di\Exceptions\InvalidArgumentException
+	 * @expectedExceptionCode 3
+	 */
+	public function testConstructFromReflectiveParams_invalidClassNameException(){
+		$di = $this->getPopulatedDi();
+
+		try {
+			$di->constructFromReflectiveParams('classDoesNotExist');
+		}catch(\Exception $ex) {
+			$this->assertInstanceOf(\ReflectionException::class, $ex->getPrevious());
+
+			throw $ex;
+		}
+	}
 
 }
