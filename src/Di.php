@@ -107,11 +107,9 @@ class Di implements DiInterface {
 			case is_callable($value):
 			case is_string($value): // don't check if it is a class until get as it triggers the autoloader
 				return $this->map[$id] = $value;
-				break;
-			default:
-				throw new InvalidArgumentException("Entries in Di must be a callable, a class name as a string, or an existing instance of an object.");
-				break;
 		}
+
+		throw new InvalidArgumentException("Entries in Di must be a callable, a class name as a string, or an existing instance of an object.");
 	}
 
 	/**
