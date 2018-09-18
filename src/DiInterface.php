@@ -11,6 +11,7 @@ use Psr\Container\ContainerInterface;
  * @author Jesse Donat
  */
 interface DiInterface extends ContainerInterface {
+
 	/**
 	 * Retrieve multiple item. For use with list()
 	 *
@@ -62,13 +63,17 @@ interface DiInterface extends ContainerInterface {
 	/**
 	 * Use reflection to execute a classes constructor with auto-populated parameters
 	 *
-	 * @param mixed[] $initials
+	 * @param string  $className The class to construct
+	 * @param mixed[] $initials An ordered list of arguments to populate initial arguments on constructor
 	 * @return object
 	 */
 	public function constructFromReflectiveParams( string $className, array $initials = [] );
 
 	/**
 	 * Use reflection to execute a callable with auto-populated parameters
+	 *
+	 * @param mixed[]  $initials An ordered list of arguments to populate initial arguments on callable
+	 * @return mixed the return value of the callable.
 	 */
 	public function callFromReflectiveParams( callable $callable, array $initials = [] );
 }
