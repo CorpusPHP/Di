@@ -110,6 +110,10 @@ function getMany($ids)
 
 Retrieve multiple item; cached if existing. For use with list()
 
+##### Parameters:
+
+- ***string[]*** `$ids` - The names/keys of the items
+
 ---
 
 #### Method: Di->get
@@ -128,6 +132,10 @@ function getManyNew($data)
 
 Retrieve multiple item. For use with list()
 
+##### Parameters:
+
+- ***array[]*** `$data` - The array of (names/keys / argument) pair tuple of the items
+
 ---
 
 #### Method: Di->getNew
@@ -137,6 +145,11 @@ function getNew($id [, $args = array()])
 ```
 
 Retrieve an item
+
+##### Parameters:
+
+- ***string*** `$id` - The name/key of the item
+- ***mixed[]*** `$args`
 
 ---
 
@@ -148,6 +161,11 @@ function duplicate($src, $dest)
 
 Clone a given value into a second key
 
+##### Parameters:
+
+- ***string*** `$src` - The source
+- ***string*** `$dest` - The destination
+
 ---
 
 #### Method: Di->set
@@ -157,6 +175,11 @@ function set($id, $value)
 ```
 
 Store a value via key to retrieve later
+
+##### Parameters:
+
+- ***string*** `$id` - The name/key of the item
+- ***mixed*** `$value` - The value to store
 
 ---
 
@@ -174,6 +197,10 @@ function has($id)
 function raw($id)
 ```
 
+##### Parameters:
+
+- ***string*** `$id` - The name/key to be retrieved
+
 ---
 
 #### Method: Di->constructFromReflectiveParams
@@ -184,6 +211,11 @@ function constructFromReflectiveParams($className [, $initials = array()])
 
 Use reflection to execute a classes constructor with auto-populated parameters
 
+##### Parameters:
+
+- ***string*** `$className` - The class to construct
+- ***mixed[]*** `$initials` - An ordered list of arguments to populate initial arguments on constructor
+
 ---
 
 #### Method: Di->callFromReflectiveParams
@@ -193,6 +225,10 @@ function callFromReflectiveParams($callable [, $initials = array()])
 ```
 
 Use reflection to execute a callable with auto-populated parameters
+
+##### Parameters:
+
+- ***mixed[]*** `$initials` - An ordered list of arguments to populate initial arguments on callable
 
 ### Class: \Corpus\Di\Exceptions\UndefinedIdentifierException
 
