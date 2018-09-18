@@ -9,7 +9,6 @@ use Psr\Container\ContainerInterface;
  *
  * @author Jon Henderson
  * @author Jesse Donat
- * @package Corpus\Di
  */
 interface DiInterface extends ContainerInterface {
 	/**
@@ -19,66 +18,57 @@ interface DiInterface extends ContainerInterface {
 	 * @return mixed[]
 	 * @throws \InvalidArgumentException
 	 */
-	public function getManyNew( array $data );
+	public function getManyNew( array $data ) : array;
 
 	/**
 	 * Retrieve multiple item; cached if existing. For use with list()
 	 *
-	 * @param string[] $names The names/keys of the items
+	 * @param string[] $ids The names/keys of the items
 	 * @return mixed[]
 	 */
-	public function getMany( array $names );
+	public function getMany( array $ids ) : array;
 
 	/**
 	 * Retrieve an item
 	 *
-	 * @param string  $name The name/key of the item
+	 * @param string  $id The name/key of the item
 	 * @param mixed[] $args
-	 * @return mixed
-	 * @throws Exceptions\UndefinedIdentifierException
+	 * @throws \Corpus\Di\Exceptions\UndefinedIdentifierException
 	 */
-	public function getNew( $name, array $args = [] );
+	public function getNew( $id, array $args = [] );
 
 	/**
 	 * Store a value via key to retrieve later
 	 *
-	 * @param string $name The name/key of the item
+	 * @param string $id The name/key of the item
 	 * @param mixed  $value The value to store
-	 * @return mixed
 	 */
-	public function set( $name, $value );
+	public function set( string $id, $value );
 
 	/**
 	 * Clone a given value into a second key
 	 *
 	 * @param string $src The source
 	 * @param string $dest The destination
-	 * @return mixed
 	 */
-	public function duplicate( $src, $dest );
+	public function duplicate( string $src, string $dest );
 
 	/**
 	 * @param string $id The name/key to be retrieved
-	 * @return mixed
-	 * @throws Exceptions\UndefinedIdentifierException
+	 * @throws \Corpus\Di\Exceptions\UndefinedIdentifierException
 	 */
-	public function raw( $id );
+	public function raw( string $id );
 
 	/**
 	 * Use reflection to execute a classes constructor with auto-populated parameters
 	 *
-	 * @param string $className
-	 * @param array  $initials
+	 * @param mixed[] $initials
 	 * @return object
 	 */
-	public function constructFromReflectiveParams( $className, array $initials = [] );
+	public function constructFromReflectiveParams( string $className, array $initials = [] );
 
 	/**
 	 * Use reflection to execute a callable with auto-populated parameters
-	 *
-	 * @param callable $callable
-	 * @param array    $initials
-	 * @return mixed
 	 */
 	public function callFromReflectiveParams( callable $callable, array $initials = [] );
 }
