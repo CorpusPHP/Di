@@ -17,6 +17,9 @@
 		"donatj/mddoc": "dev-master",
 		"friendsofphp/php-cs-fixer": "^2.13"
 	},
+	"provide": {
+		"psr/container": "~1.0"
+	},
 	"autoload": {
 		"psr-4": {
 			"Corpus\\Di\\": "src/"
