@@ -1,6 +1,8 @@
 {
 	"name": "corpus/di",
+	"type": "library",
 	"description": "Simple Yet Powerful PSR-11 Complaint Di Container",
+	"keywords": [ "di", "container", "dependency injection", "ioc" ],
 	"license": "MIT",
 	"authors": [
 		{
