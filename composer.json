@@ -1,6 +1,6 @@
 {
 	"name": "corpus/di",
-	"description": "Simple PSR-11 Complaint Di Container",
+	"description": "Simple Yet Powerful PSR-11 Complaint Di Container",
 	"license": "MIT",
 	"authors": [
 		{
