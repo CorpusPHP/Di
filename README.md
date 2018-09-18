@@ -196,6 +196,4 @@ Use reflection to execute a callable with auto-populated parameters
 
 ### Class: \Corpus\Di\Exceptions\UndefinedIdentifierException
 
-Class UndefinedIdentifierException
-
 Thrown when attempting to retrieve a key that does not exist.
