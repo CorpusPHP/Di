@@ -6,3 +6,7 @@ README.md: $(SRC_FILES)
 .PHONY: fix
 fix:
 	vendor/bin/php-cs-fixer fix
+
+.PHONY: test
+test:
+	vendor/bin/phpunit
