@@ -65,7 +65,7 @@ class DiTest extends TestCase {
 		return $di;
 	}
 
-	public function testReflectiveInjection() {
+	public function testReflectiveInjection() : void {
 		$di = $this->getPopulatedDi();
 
 		$di->set('test_reflective_injection', function ( demoValue $test_class, demoClass $demo_injection ) {
@@ -78,24 +78,22 @@ class DiTest extends TestCase {
 		$this->assertSame(7, $di->get('test_reflective_injection'));
 	}
 
-	public function testReflectionInjectionOnInvokable() {
+	public function testReflectionInjectionOnInvokable() : void {
 		$di = $this->getPopulatedDi();
 
 		$this->assertSame(21, $di->get('demoInvokeWithParam'), 'invoking a stored instance should call __invoke');
 		$this->assertInstanceOf(demoInvokeWithParam::class, $di->get('demoInvokeWithParamAsString'), 'invoking the ::class string should INSTANTIATE, not __invoke');
 	}
 
-	/**
-	 * @expectedException \Corpus\Di\Exceptions\UndefinedIdentifierException
-	 */
-	public function testReflectiveInjection_undefinedException() {
+	public function testReflectiveInjection_undefinedException() : void {
+		$this->expectException(\Corpus\Di\Exceptions\UndefinedIdentifierException::class);
 		$di = $this->getPopulatedDi();
 
 		$di->set('test_reflective_injection', function ( demoValue $test_class, demoClass $demo_injection, $noExist ) { return 7; });
 		$di->get('test_reflective_injection');
 	}
 
-	public function testReflectiveInjectionWithGetNew(){
+	public function testReflectiveInjectionWithGetNew() : void {
 		$di = $this->getPopulatedDi();
 
 		$di->set('test_reflective_injection2', function ( $ok, demoValue $test_class, demoClass $demo_injection ) {
@@ -109,7 +107,7 @@ class DiTest extends TestCase {
 		$this->assertSame(7, $di->getNew('test_reflective_injection2', [true]));
 	}
 
-	public function testReflectiveInjectionWithGetNewOfDefinedEntries(){
+	public function testReflectiveInjectionWithGetNewOfDefinedEntries() : void {
 		$di = $this->getPopulatedDi();
 
 		$di->set('test_reflective_injection', function ( demoValue $test_class, demoClass $demo_injection ) {
@@ -125,7 +123,7 @@ class DiTest extends TestCase {
 		$this->assertSame([$test, $demo], $di->getNew('test_reflective_injection', [$test, $demo]));
 	}
 
-	public function testHas(){
+	public function testHas() : void {
 		$di = new Di();
 
 		$this->assertFalse($di->has('test_object'));
@@ -135,10 +133,8 @@ class DiTest extends TestCase {
 		$this->assertTrue($di->has('test_object'));
 	}
 
-	/**
-	 * @expectedException \Corpus\Di\Exceptions\InvalidArgumentException
-	 */
-	public function testInvalidEntries(){
+	public function testInvalidEntries() : void {
+		$this->expectException(\Corpus\Di\Exceptions\InvalidArgumentException::class);
 		$di = new Di();
 
 		// test scalars
@@ -146,7 +142,7 @@ class DiTest extends TestCase {
 		$di->set('test_scalar2', "my awesome string");
 	}
 
-	public function testGet() {
+	public function testGet() : void {
 		$di = $this->getPopulatedDi();
 
 		$this->assertSame(11, $di->get('test_callback'));
@@ -165,7 +161,7 @@ class DiTest extends TestCase {
 
 	}
 
-	public function testGetMany() {
+	public function testGetMany() : void {
 		$di = $this->getPopulatedDi();
 
 		[$one, $two, $three] = $di->getMany([ 'test_callback', 'test_callback', 'test_callback' ]);
@@ -177,7 +173,7 @@ class DiTest extends TestCase {
 		$this->assertSame($obj1, $obj2);
 	}
 
-	public function testGetNew() {
+	public function testGetNew() : void {
 		$di = $this->getPopulatedDi();
 
 		$this->assertSame(11, $di->getNew('test_callback'));
@@ -193,7 +189,7 @@ class DiTest extends TestCase {
 
 	}
 
-	public function testGetManyNew() {
+	public function testGetManyNew() : void {
 		$di = $this->getPopulatedDi();
 
 		[$one, $two, $three] = $di->getManyNew([ 'test_callback', 'test_callback', 'test_callback' ]);
@@ -210,7 +206,7 @@ class DiTest extends TestCase {
 		$this->assertNotSame($obj1, $obj2);
 	}
 
-	public function testDuplicate() {
+	public function testDuplicate() : void {
 		$di = $this->getPopulatedDi();
 
 		$di->duplicate('test_object', 'duplicate_object');
@@ -221,7 +217,7 @@ class DiTest extends TestCase {
 		$this->assertNotSame($obj1, $obj2);
 	}
 
-	public function testRaw() {
+	public function testRaw() : void {
 		$di = new Di();
 
 		$lambda  = function () { return 0; };
@@ -234,64 +230,52 @@ class DiTest extends TestCase {
 		$this->assertNotEquals($raw, 0);
 	}
 
-	/**
-	 * @expectedException \Corpus\Di\Exceptions\InvalidArgumentException
-	 */
-	public function testGetManyNewInvalidArgumentException_tooMany() {
+	public function testGetManyNewInvalidArgumentException_tooMany() : void {
+		$this->expectException(\Corpus\Di\Exceptions\InvalidArgumentException::class);
 		$di = $this->getPopulatedDi();
 
 		$di->getManyNew([ [ 'test_argument_callback', 1, 2 ] ]);
 	}
 
-	/**
-	 * @expectedException \Corpus\Di\Exceptions\InvalidArgumentException
-	 */
-	public function testGetManyNewInvalidArgumentException_tooFew() {
+	public function testGetManyNewInvalidArgumentException_tooFew() : void {
+		$this->expectException(\Corpus\Di\Exceptions\InvalidArgumentException::class);
 		$di = $this->getPopulatedDi();
 
 		$di->getManyNew([ [ ] ]);
 	}
 
-	/**
-	 * @expectedException \Corpus\Di\Exceptions\InvalidArgumentException
-	 */
-	public function testGetManyNewInvalidArgumentException_badKeyType() {
+	public function testGetManyNewInvalidArgumentException_badKeyType() : void {
+		$this->expectException(\Corpus\Di\Exceptions\InvalidArgumentException::class);
 		$di = $this->getPopulatedDi();
 
 		$di->getManyNew([ 1 ]);
 	}
 
-	/**
-	 * @expectedException \Corpus\Di\Exceptions\UndefinedIdentifierException
-	 */
-	public function testGetUndefinedException() {
+	public function testGetUndefinedException() : void {
+		$this->expectException(\Corpus\Di\Exceptions\UndefinedIdentifierException::class);
 		$di = new Di();
 
 		//SHOULD throw an exception
 		$di->get('undefined_key');
 	}
 
-	/**
-	 * @expectedException \Corpus\Di\Exceptions\UndefinedIdentifierException
-	 */
-	public function testGetNewUndefinedException() {
+	public function testGetNewUndefinedException() : void {
+		$this->expectException(\Corpus\Di\Exceptions\UndefinedIdentifierException::class);
 		$di = new Di();
 
 		//SHOULD throw an exception
 		$di->getNew('undefined_key');
 	}
 
-	/**
-	 * @expectedException \Corpus\Di\Exceptions\UndefinedIdentifierException
-	 */
-	public function testRawUndefinedException() {
+	public function testRawUndefinedException() : void {
+		$this->expectException(\Corpus\Di\Exceptions\UndefinedIdentifierException::class);
 		$di = new Di();
 
 		//SHOULD throw an exception
 		$di->raw('undefined_key');
 	}
 
-	public function testCallFromReflectiveParams_callableArray(){
+	public function testCallFromReflectiveParams_callableArray() : void {
 		$di = $this->getPopulatedDi();
 
 		$ok = new class($this) {
@@ -312,11 +296,9 @@ class DiTest extends TestCase {
 		$this->assertTrue($ok->success);
 	}
 
-	/**
-	 * @expectedException \Corpus\Di\Exceptions\InvalidArgumentException
-	 * @expectedExceptionCode 3
-	 */
-	public function testConstructFromReflectiveParams_invalidClassNameException(){
+	public function testConstructFromReflectiveParams_invalidClassNameException() : void {
+		$this->expectExceptionCode(3);
+		$this->expectException(\Corpus\Di\Exceptions\InvalidArgumentException::class);
 		$di = $this->getPopulatedDi();
 
 		try {
