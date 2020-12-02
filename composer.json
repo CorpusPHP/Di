@@ -2,7 +2,12 @@
 	"name": "corpus/di",
 	"type": "library",
 	"description": "Simple Yet Powerful PSR-11 Complaint Di Container",
-	"keywords": [ "di", "container", "dependency injection", "ioc" ],
+	"keywords": [
+		"di",
+		"container",
+		"dependency injection",
+		"ioc"
+	],
 	"license": "MIT",
 	"authors": [
 		{
@@ -12,15 +17,12 @@
 	],
 	"require": {
 		"php": ">=7.1.0",
-		"psr/container": "~1.0.0"
+		"psr/container": "~1.0"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~6.0",
 		"donatj/mddoc": "dev-master",
-		"friendsofphp/php-cs-fixer": "^2.13"
-	},
-	"provide": {
-		"psr/container-implementation": "~1.0"
+		"friendsofphp/php-cs-fixer": "^2.16"
 	},
 	"autoload": {
 		"psr-4": {
