@@ -5,7 +5,7 @@
         <section title="Corpus Di">
 			<badge-poser type="version" />
 			<badge-poser type="license" />
-			<badge-travis name="CorpusPHP/Di" />
+			<badge-github-action name="CorpusPHP/Di" workflow="CI" />
 			<badge-scrutinizer name="CorpusPHP/Di" type="quality"/>
             <text>A Simple PSR-11 Complaint Di Container</text>
 			<section title="Requirements">

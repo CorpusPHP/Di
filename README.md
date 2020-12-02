@@ -2,7 +2,7 @@
 
 [![Latest Stable Version](https://poser.pugx.org/corpus/di/version)](https://packagist.org/packages/corpus/di)
 [![License](https://poser.pugx.org/corpus/di/license)](https://packagist.org/packages/corpus/di)
-[![Build Status](https://travis-ci.org/CorpusPHP/Di.svg?branch=master)](https://travis-ci.org/CorpusPHP/Di)
+[![Build Status](https://github.com/CorpusPHP/Di/workflows/CI/badge.svg?)](https://github.com/CorpusPHP/Di/actions?query=workflow%3ACI)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/CorpusPHP/Di/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/CorpusPHP/Di)
 
 
@@ -11,7 +11,7 @@ A Simple PSR-11 Complaint Di Container
 ## Requirements
 
 - **php**: >=7.1.0
-- **psr/container**: ~1.0.0
+- **psr/container**: ~1.0
 
 ## Installing
 
@@ -105,7 +105,7 @@ $controller2 = $di->constructFromReflectiveParams('MyController');
 #### Method: Di->getMany
 
 ```php
-function getMany($ids)
+function getMany(array $ids) : array
 ```
 
 Retrieve multiple item; cached if existing. For use with list()
@@ -127,7 +127,7 @@ function get($id)
 #### Method: Di->getManyNew
 
 ```php
-function getManyNew($data)
+function getManyNew(array $data) : array
 ```
 
 Retrieve multiple item. For use with list()
@@ -141,7 +141,7 @@ Retrieve multiple item. For use with list()
 #### Method: Di->getNew
 
 ```php
-function getNew($id [, $args = array()])
+function getNew($id [, array $args = []])
 ```
 
 Retrieve an item
@@ -149,14 +149,14 @@ Retrieve an item
 ##### Parameters:
 
 - ***string*** `$id` - The name/key of the item
-- ***mixed[]*** `$args`
+- ***array*** `$args`
 
 ---
 
 #### Method: Di->duplicate
 
 ```php
-function duplicate($src, $dest)
+function duplicate(string $src, string $dest)
 ```
 
 Clone a given value into a second key
@@ -171,7 +171,7 @@ Clone a given value into a second key
 #### Method: Di->set
 
 ```php
-function set($id, $value)
+function set(string $id, $value)
 ```
 
 Store a value via key to retrieve later
@@ -194,7 +194,7 @@ function has($id)
 #### Method: Di->raw
 
 ```php
-function raw($id)
+function raw(string $id)
 ```
 
 ##### Parameters:
@@ -206,7 +206,7 @@ function raw($id)
 #### Method: Di->constructFromReflectiveParams
 
 ```php
-function constructFromReflectiveParams($className [, $initials = array()])
+function constructFromReflectiveParams(string $className [, array $initials = []])
 ```
 
 Use reflection to execute a classes constructor with auto-populated parameters
@@ -214,21 +214,21 @@ Use reflection to execute a classes constructor with auto-populated parameters
 ##### Parameters:
 
 - ***string*** `$className` - The class to construct
-- ***mixed[]*** `$initials` - An ordered list of arguments to populate initial arguments on constructor
+- ***array*** `$initials` - An ordered list of arguments to populate initial arguments on constructor
 
 ---
 
 #### Method: Di->callFromReflectiveParams
 
 ```php
-function callFromReflectiveParams($callable [, $initials = array()])
+function callFromReflectiveParams(callable $callable [, array $initials = []])
 ```
 
 Use reflection to execute a callable with auto-populated parameters
 
 ##### Parameters:
 
-- ***mixed[]*** `$initials` - An ordered list of arguments to populate initial arguments on callable
+- ***array*** `$initials` - An ordered list of arguments to populate initial arguments on callable
 
 ### Class: \Corpus\Di\Exceptions\UndefinedIdentifierException
 
