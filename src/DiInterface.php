@@ -76,4 +76,5 @@ interface DiInterface extends ContainerInterface {
 	 * @return mixed the return value of the callable.
 	 */
 	public function callFromReflectiveParams( callable $callable, array $initials = [] );
+
 }

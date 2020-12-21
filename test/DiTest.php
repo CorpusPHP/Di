@@ -7,18 +7,23 @@ use Corpus\Di\DiInterface;
 use PHPUnit\Framework\TestCase;
 
 class demoClass {
+
 	public function __construct(demoValue $test_class){
 
 	}
+
 }
 
 class demoValue {
+
 	public function __invoke(){
 		return true;
 	}
+
 }
 
 class demoInvokeWithParam {
+
 	public $test_class;
 
 	public function __invoke($test_class){
@@ -26,16 +31,17 @@ class demoInvokeWithParam {
 
 		return 21;
 	}
+
 }
 
 class DiTest extends TestCase {
 
 	protected function getPopulatedDi() : DiInterface {
-		$di = new Di();
+		$di = new Di;
 
 		// test callbacks
 		$int = 10;
-		$di->set('test_callback', function (int $val = null) use ( &$int ) {
+		$di->set('test_callback', function (?int $val = null) use ( &$int ) {
 			if($val !== null) {
 				$int = $val;
 			}else {
@@ -124,7 +130,7 @@ class DiTest extends TestCase {
 	}
 
 	public function testHas() : void {
-		$di = new Di();
+		$di = new Di;
 
 		$this->assertFalse($di->has('test_object'));
 		$di->set('test_object', function () {
@@ -135,7 +141,7 @@ class DiTest extends TestCase {
 
 	public function testInvalidEntries() : void {
 		$this->expectException(\Corpus\Di\Exceptions\InvalidArgumentException::class);
-		$di = new Di();
+		$di = new Di;
 
 		// test scalars
 		$di->set('test_scalar', 7);
@@ -218,7 +224,7 @@ class DiTest extends TestCase {
 	}
 
 	public function testRaw() : void {
-		$di = new Di();
+		$di = new Di;
 
 		$lambda  = function () { return 0; };
 		$lambda2 = function () { return 0; };
@@ -253,7 +259,7 @@ class DiTest extends TestCase {
 
 	public function testGetUndefinedException() : void {
 		$this->expectException(\Corpus\Di\Exceptions\UndefinedIdentifierException::class);
-		$di = new Di();
+		$di = new Di;
 
 		//SHOULD throw an exception
 		$di->get('undefined_key');
@@ -261,7 +267,7 @@ class DiTest extends TestCase {
 
 	public function testGetNewUndefinedException() : void {
 		$this->expectException(\Corpus\Di\Exceptions\UndefinedIdentifierException::class);
-		$di = new Di();
+		$di = new Di;
 
 		//SHOULD throw an exception
 		$di->getNew('undefined_key');
@@ -269,7 +275,7 @@ class DiTest extends TestCase {
 
 	public function testRawUndefinedException() : void {
 		$this->expectException(\Corpus\Di\Exceptions\UndefinedIdentifierException::class);
-		$di = new Di();
+		$di = new Di;
 
 		//SHOULD throw an exception
 		$di->raw('undefined_key');
@@ -279,10 +285,12 @@ class DiTest extends TestCase {
 		$di = $this->getPopulatedDi();
 
 		$ok = new class($this) {
+
 			public $that;
 			public function __construct(DiTest $that){
 				$this->that = $that;
 			}
+
 			public $success = false;
 			public function soup($test_class){
 				$this->success = true;
@@ -290,7 +298,8 @@ class DiTest extends TestCase {
 
 				return "foo-bar";
 			}
-		};
+		
+};
 
 		$this->assertSame("foo-bar", $di->callFromReflectiveParams([$ok, 'soup']));
 		$this->assertTrue($ok->success);

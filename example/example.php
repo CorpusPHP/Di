@@ -2,10 +2,10 @@
 
 require 'vendor/autoload.php';
 
-$di = new \Corpus\Di\Di();
+$di = new \Corpus\Di\Di;
 
 // Eager Loading
-$di->set('foo', new Foo());
+$di->set('foo', new Foo);
 
 $di->get('foo'); // the Foo instance from above
 
@@ -13,7 +13,7 @@ $di->get('foo'); // the Foo instance from above
 
 // Lazy Loading
 $di->set('bar', function () {
-	return new Bar();
+	return new Bar;
 });
 
 // Value is memoized, new Bar() is only called once at first `get`.
