@@ -8,19 +8,12 @@ use Corpus\Di\Exceptions\UndefinedIdentifierException;
 
 class Di implements DiInterface {
 
-	/**
-	 * @var array The map in which to store our objects
-	 */
+	/** @var array The map in which to store our objects */
 	protected $map = [];
 
-	/**
-	 * @var array The map in which we store called values
-	 */
+	/** @var array The map in which we store called values */
 	protected $memoizedCallResults = [];
 
-	/**
-	 * @inheritDoc
-	 */
 	public function getMany( array $ids ) : array {
 		$return = [];
 		foreach( $ids as $id ) {
@@ -30,9 +23,6 @@ class Di implements DiInterface {
 		return $return;
 	}
 
-	/**
-	 * @inheritDoc
-	 */
 	public function get( $id ) {
 		if( !$this->has($id) ) {
 			throw new UndefinedIdentifierException("{$id} does not exist.");
@@ -45,9 +35,6 @@ class Di implements DiInterface {
 		return $this->memoizedCallResults[$id] = $this->getNew($id);
 	}
 
-	/**
-	 * @inheritDoc
-	 */
 	public function getManyNew( array $data ) : array {
 		$return = [];
 		foreach( $data as $pair ) {
@@ -69,9 +56,6 @@ class Di implements DiInterface {
 		return $return;
 	}
 
-	/**
-	 * @inheritDoc
-	 */
 	public function getNew( $id, array $args = [] ) {
 		if( !array_key_exists($id, $this->map) ) {
 			throw new UndefinedIdentifierException("{$id} does not exist.");
@@ -91,16 +75,10 @@ class Di implements DiInterface {
 		throw new RuntimeException('unhandled di entry type');
 	}
 
-	/**
-	 * @inheritDoc
-	 */
 	public function duplicate( string $src, string $dest ) {
 		return $this->set($dest, $this->raw($src));
 	}
 
-	/**
-	 * @inheritDoc
-	 */
 	public function set( string $id, $value ) {
 		switch( true ) {
 			case is_object($value):
@@ -112,16 +90,10 @@ class Di implements DiInterface {
 		throw new InvalidArgumentException("Entries in Di must be a callable, a class name as a string, or an existing instance of an object.");
 	}
 
-	/**
-	 * @inheritDoc
-	 */
 	public function has( $id ) {
 		return array_key_exists($id, $this->map);
 	}
 
-	/**
-	 * @inheritDoc
-	 */
 	public function raw( string $id ) {
 		if( isset($this->map[$id]) ) {
 			return $this->map[$id];
@@ -147,9 +119,6 @@ class Di implements DiInterface {
 		return $arguments;
 	}
 
-	/**
-	 * @inheritdoc
-	 */
 	public function constructFromReflectiveParams( string $className, array $initials = [] ) {
 		try {
 			$inst = new \ReflectionClass($className);
@@ -167,9 +136,6 @@ class Di implements DiInterface {
 		return new $className;
 	}
 
-	/**
-	 * @inheritdoc
-	 */
 	public function callFromReflectiveParams( callable $callable, array $initials = [] ) {
 		try {
 			if( is_array($callable) ) {

@@ -33,10 +33,10 @@ Getting started with Di the three most important methods follow.
 
 require 'vendor/autoload.php';
 
-$di = new \Corpus\Di\Di();
+$di = new \Corpus\Di\Di;
 
 // Eager Loading
-$di->set('foo', new Foo());
+$di->set('foo', new Foo);
 
 $di->get('foo'); // the Foo instance from above
 
@@ -44,7 +44,7 @@ $di->get('foo'); // the Foo instance from above
 
 // Lazy Loading
 $di->set('bar', function () {
-	return new Bar();
+	return new Bar;
 });
 
 // Value is memoized, new Bar() is only called once at first `get`.
@@ -82,10 +82,10 @@ $quux = $di->get('quux'); // Instance of Quux given the previous instance of Qux
 // --- --- --- --- --- ---
 
 // getMany lets you retrieve multiple memoized values at once.
-list($foo, $bar) = $di->getMany([ 'foo', 'bar' ]);
+[$foo, $bar] = $di->getMany([ 'foo', 'bar' ]);
 
 // getManyNew lets you retrieve multiple new values at once, providing for arguments.
-list($baz, $baz2) = $di->getManyNew([ [ 'baz', [ 'corge' ] ], [ 'baz', [ 'grault' ] ] ]);
+[$baz, $baz2] = $di->getManyNew([ [ 'baz', [ 'corge' ] ], [ 'baz', [ 'grault' ] ] ]);
 
 $di->callFromReflectiveParams(function(Bar $bar, Baz $baz){
 	// Callable called with parameters automatically populated based on their name
@@ -114,13 +114,13 @@ Retrieve multiple item; cached if existing. For use with list()
 
 - ***string[]*** `$ids` - The names/keys of the items
 
+##### Returns:
+
+- ***array***
+
 ---
 
-#### Method: Di->get
-
-```php
-function get($id)
-```
+#### Undocumented Method: `Di->get($id)`
 
 ---
 
@@ -135,6 +135,10 @@ Retrieve multiple item. For use with list()
 ##### Parameters:
 
 - ***array[]*** `$data` - The array of (names/keys / argument) pair tuple of the items
+
+##### Returns:
+
+- ***array***
 
 ---
 
@@ -183,11 +187,7 @@ Store a value via key to retrieve later
 
 ---
 
-#### Method: Di->has
-
-```php
-function has($id)
-```
+#### Undocumented Method: `Di->has($id)`
 
 ---
 
@@ -216,6 +216,10 @@ Use reflection to execute a classes constructor with auto-populated parameters
 - ***string*** `$className` - The class to construct
 - ***array*** `$initials` - An ordered list of arguments to populate initial arguments on constructor
 
+##### Returns:
+
+- ***object***
+
 ---
 
 #### Method: Di->callFromReflectiveParams
@@ -229,6 +233,10 @@ Use reflection to execute a callable with auto-populated parameters
 ##### Parameters:
 
 - ***array*** `$initials` - An ordered list of arguments to populate initial arguments on callable
+
+##### Returns:
+
+- ***mixed*** - the return value of the callable.
 
 ### Class: \Corpus\Di\Exceptions\UndefinedIdentifierException
 

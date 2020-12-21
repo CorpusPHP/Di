@@ -51,10 +51,10 @@ $quux = $di->get('quux'); // Instance of Quux given the previous instance of Qux
 // --- --- --- --- --- ---
 
 // getMany lets you retrieve multiple memoized values at once.
-list($foo, $bar) = $di->getMany([ 'foo', 'bar' ]);
+[$foo, $bar] = $di->getMany([ 'foo', 'bar' ]);
 
 // getManyNew lets you retrieve multiple new values at once, providing for arguments.
-list($baz, $baz2) = $di->getManyNew([ [ 'baz', [ 'corge' ] ], [ 'baz', [ 'grault' ] ] ]);
+[$baz, $baz2] = $di->getManyNew([ [ 'baz', [ 'corge' ] ], [ 'baz', [ 'grault' ] ] ]);
 
 $di->callFromReflectiveParams(function(Bar $bar, Baz $baz){
 	// Callable called with parameters automatically populated based on their name

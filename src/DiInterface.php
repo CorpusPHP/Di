@@ -16,8 +16,8 @@ interface DiInterface extends ContainerInterface {
 	 * Retrieve multiple item. For use with list()
 	 *
 	 * @param array[] $data The array of (names/keys / argument) pair tuple of the items
-	 * @return mixed[]
 	 * @throws \InvalidArgumentException
+	 * @return mixed[]
 	 */
 	public function getManyNew( array $data ) : array;
 
@@ -32,7 +32,7 @@ interface DiInterface extends ContainerInterface {
 	/**
 	 * Retrieve an item
 	 *
-	 * @param string  $id The name/key of the item
+	 * @param string  $id   The name/key of the item
 	 * @param mixed[] $args
 	 * @throws \Corpus\Di\Exceptions\UndefinedIdentifierException
 	 */
@@ -41,7 +41,7 @@ interface DiInterface extends ContainerInterface {
 	/**
 	 * Store a value via key to retrieve later
 	 *
-	 * @param string $id The name/key of the item
+	 * @param string $id    The name/key of the item
 	 * @param mixed  $value The value to store
 	 */
 	public function set( string $id, $value );
@@ -49,7 +49,7 @@ interface DiInterface extends ContainerInterface {
 	/**
 	 * Clone a given value into a second key
 	 *
-	 * @param string $src The source
+	 * @param string $src  The source
 	 * @param string $dest The destination
 	 */
 	public function duplicate( string $src, string $dest );
@@ -64,7 +64,7 @@ interface DiInterface extends ContainerInterface {
 	 * Use reflection to execute a classes constructor with auto-populated parameters
 	 *
 	 * @param string  $className The class to construct
-	 * @param mixed[] $initials An ordered list of arguments to populate initial arguments on constructor
+	 * @param mixed[] $initials  An ordered list of arguments to populate initial arguments on constructor
 	 * @return object
 	 */
 	public function constructFromReflectiveParams( string $className, array $initials = [] );
@@ -72,7 +72,7 @@ interface DiInterface extends ContainerInterface {
 	/**
 	 * Use reflection to execute a callable with auto-populated parameters
 	 *
-	 * @param mixed[]  $initials An ordered list of arguments to populate initial arguments on callable
+	 * @param mixed[] $initials An ordered list of arguments to populate initial arguments on callable
 	 * @return mixed the return value of the callable.
 	 */
 	public function callFromReflectiveParams( callable $callable, array $initials = [] );

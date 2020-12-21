@@ -298,7 +298,7 @@ class DiTest extends TestCase {
 
 				return "foo-bar";
 			}
-		
+
 };
 
 		$this->assertSame("foo-bar", $di->callFromReflectiveParams([$ok, 'soup']));
