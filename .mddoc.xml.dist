@@ -2,12 +2,12 @@
 
 	<docpage target="README.md" autoloader="psr4" autoloader-root="src" autoloader-root-namespace="Corpus\Di">
 
-        <section title="Corpus Di">
-			<badge-poser type="version" />
-			<badge-poser type="license" />
-			<badge-github-action name="CorpusPHP/Di" workflow="CI" />
+		<section title="Corpus Di">
+			<badge-poser type="version"/>
+			<badge-poser type="license"/>
+			<badge-github-action name="CorpusPHP/Di" workflow="CI"/>
 			<badge-scrutinizer name="CorpusPHP/Di" type="quality"/>
-            <text>A Simple PSR-11 Complaint Di Container</text>
+			<text>A Simple PSR-11 Complaint Di Container</text>
 			<section title="Requirements">
 				<composer-requires/>
 			</section>
@@ -21,10 +21,10 @@
 - The `getNew` is used to invoke the lazy loading creation lambda every call, optionally taking an array of constructor arguments as a second parameter.</text>
 				<source name="example/example.php" lang="php"/>
 			</section>
-            <section title="Documentation">
+			<section title="Documentation">
 				<file name="src/Di.php"/>
 				<file name="src/Exceptions/UndefinedIdentifierException.php"/>
-            </section>
-        </section>
+			</section>
+		</section>
 	</docpage>
 </mddoc>

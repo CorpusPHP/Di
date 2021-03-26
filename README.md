@@ -206,7 +206,7 @@ function raw(string $id)
 #### Method: Di->constructFromReflectiveParams
 
 ```php
-function constructFromReflectiveParams(string $className [, array $initials = []])
+function constructFromReflectiveParams(string $className [, array $initials = []]) : object
 ```
 
 Use reflection to execute a classes constructor with auto-populated parameters
@@ -215,10 +215,6 @@ Use reflection to execute a classes constructor with auto-populated parameters
 
 - ***string*** `$className` - The class to construct
 - ***array*** `$initials` - An ordered list of arguments to populate initial arguments on constructor
-
-##### Returns:
-
-- ***object***
 
 ---
 
