@@ -10,7 +10,7 @@ A Simple PSR-11 Complaint Di Container
 
 ## Requirements
 
-- **php**: >=7.1.0
+- **php**: >=7.3
 - **psr/container**: ~1.0
 
 ## Installing
