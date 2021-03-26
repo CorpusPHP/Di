@@ -65,9 +65,8 @@ interface DiInterface extends ContainerInterface {
 	 *
 	 * @param string  $className The class to construct
 	 * @param mixed[] $initials  An ordered list of arguments to populate initial arguments on constructor
-	 * @return object
 	 */
-	public function constructFromReflectiveParams( string $className, array $initials = [] );
+	public function constructFromReflectiveParams( string $className, array $initials = [] ) : object;
 
 	/**
 	 * Use reflection to execute a callable with auto-populated parameters

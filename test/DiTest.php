@@ -212,6 +212,22 @@ class DiTest extends TestCase {
 		$this->assertNotSame($obj1, $obj2);
 	}
 
+	public function testNamedDiInitialValues() : void {
+		$di = new Di;
+		$di->set('foo', function ( $a, $b, $c = 0, $d = 0 ) : int { return $d + (10 * $c) + (100 * $b) + (1000 * $a); });
+		$di->set('a', function () : int { return 2; });
+		$di->set('b', function () : int { return 7; });
+
+		$this->assertSame(2700, $di->getNew('foo'));
+		$this->assertSame(1000, $di->getNew('foo', [ 1, 0 ]));
+		$this->assertSame(1234, $di->getNew('foo', [ 1, 2, 3, 4 ]));
+		$this->assertSame(2309, $di->getNew('foo', [ 1 => 3, 3 => 9 ]));
+		$this->assertSame(2300, $di->getNew('foo', [ 'b' => 3 ]));
+		$this->assertSame(2309, $di->getNew('foo', [ 'b' => 3, 'd' => 9 ]));
+		$this->assertSame(2709, $di->getNew('foo', [ 'd' => 9 ]), 'tests that an optional *after* another option is populated.');
+		$this->assertSame(2900, $di->getNew('foo', [ 1 => 9, 'b' => 3 ]), 'tests that indexed initials override named');
+	}
+
 	public function testDuplicate() : void {
 		$di = $this->getPopulatedDi();
 

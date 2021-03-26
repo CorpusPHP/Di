@@ -103,23 +103,33 @@ class Di implements DiInterface {
 	}
 
 	/**
-	 * @param \ReflectionFunction|\ReflectionMethod $ref
-	 * @return array
+	 * @return mixed[]
 	 */
-	protected function getReflectiveDiMethodParams( $ref, array $initials = [] ) {
-		/** @var \ReflectionParameter[] $cParams */
-		$cParams   = array_slice($ref->getParameters(), count($initials));
-		$arguments = $initials;
-		foreach( $cParams as $cParam ) {
-			if( !$cParam->isOptional() ) {
-				$arguments[] = $this->get($cParam->getName());
+	protected function getReflectiveDiMethodParams( \ReflectionFunctionAbstract $ref, array $initials = [] ) : array {
+		$cParams   = $ref->getParameters();
+		$arguments = [];
+		foreach( $cParams as $cIndex => $cParam ) {
+			$name    = $cParam->getName();
+			$initial = $initials[$cIndex] ?? $initials[$name] ?? null;
+			if( $initial !== null ) {
+				$arguments[] = $initial;
+
+				continue;
 			}
+
+			if( $cParam->isOptional() ) {
+				$arguments[] = $cParam->getDefaultValue();
+
+				continue;
+			}
+
+			$arguments[] = $this->get($name);
 		}
 
 		return $arguments;
 	}
 
-	public function constructFromReflectiveParams( string $className, array $initials = [] ) {
+	public function constructFromReflectiveParams( string $className, array $initials = [] ) : object {
 		try {
 			$inst = new \ReflectionClass($className);
 			$ref  = $inst->getConstructor();
