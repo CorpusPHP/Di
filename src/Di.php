@@ -90,7 +90,7 @@ class Di implements DiInterface {
 		throw new InvalidArgumentException("Entries in Di must be a callable, a class name as a string, or an existing instance of an object.");
 	}
 
-	public function has( $id ) {
+	public function has( $id ) : bool {
 		return array_key_exists($id, $this->map);
 	}
 
