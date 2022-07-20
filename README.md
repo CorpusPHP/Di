@@ -87,7 +87,7 @@ $quux = $di->get('quux'); // Instance of Quux given the previous instance of Qux
 // getManyNew lets you retrieve multiple new values at once, providing for arguments.
 [$baz, $baz2] = $di->getManyNew([ [ 'baz', [ 'corge' ] ], [ 'baz', [ 'grault' ] ] ]);
 
-$di->callFromReflectiveParams(function(Bar $bar, Baz $baz){
+$di->callFromReflectiveParams(function (Bar $bar, Baz $baz){
 	// Callable called with parameters automatically populated based on their name
 	// $bar => 'bar'
 });

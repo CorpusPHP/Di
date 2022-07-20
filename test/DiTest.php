@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class demoClass {
 
-	public function __construct(demoValue $test_class){
+	public function __construct(demoValue $test_class) {
 
 	}
 
@@ -16,7 +16,7 @@ class demoClass {
 
 class demoValue {
 
-	public function __invoke(){
+	public function __invoke() {
 		return true;
 	}
 
@@ -26,7 +26,7 @@ class demoInvokeWithParam {
 
 	public $test_class;
 
-	public function __invoke($test_class){
+	public function __invoke($test_class) {
 		$this->test_class = $test_class;
 
 		return 21;
@@ -303,12 +303,12 @@ class DiTest extends TestCase {
 		$ok = new class($this) {
 
 			public $that;
-			public function __construct(DiTest $that){
+			public function __construct(DiTest $that) {
 				$this->that = $that;
 			}
 
 			public $success = false;
-			public function soup($test_class){
+			public function soup($test_class) {
 				$this->success = true;
 				$this->that->assertInstanceOf(demoValue::class, $test_class);
 
