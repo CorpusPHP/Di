@@ -3,7 +3,6 @@
 [![Latest Stable Version](https://poser.pugx.org/corpus/di/version)](https://packagist.org/packages/corpus/di)
 [![License](https://poser.pugx.org/corpus/di/license)](https://packagist.org/packages/corpus/di)
 [![CI](https://github.com/CorpusPHP/Di/workflows/CI/badge.svg?)](https://github.com/CorpusPHP/Di/actions?query=workflow%3ACI)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/CorpusPHP/Di/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/CorpusPHP/Di)
 
 
 A Simple PSR-11 Complaint Di Container
