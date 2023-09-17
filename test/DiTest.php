@@ -277,7 +277,7 @@ class DiTest extends TestCase {
 		$this->expectException(\Corpus\Di\Exceptions\UndefinedIdentifierException::class);
 		$di = new Di;
 
-		//SHOULD throw an exception
+		// SHOULD throw an exception
 		$di->get('undefined_key');
 	}
 
@@ -285,7 +285,7 @@ class DiTest extends TestCase {
 		$this->expectException(\Corpus\Di\Exceptions\UndefinedIdentifierException::class);
 		$di = new Di;
 
-		//SHOULD throw an exception
+		// SHOULD throw an exception
 		$di->getNew('undefined_key');
 	}
 
@@ -293,7 +293,7 @@ class DiTest extends TestCase {
 		$this->expectException(\Corpus\Di\Exceptions\UndefinedIdentifierException::class);
 		$di = new Di;
 
-		//SHOULD throw an exception
+		// SHOULD throw an exception
 		$di->raw('undefined_key');
 	}
 
