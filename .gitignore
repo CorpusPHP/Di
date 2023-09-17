@@ -4,3 +4,4 @@ clover.xml
 .idea/
 composer.lock
 /.php_cs.cache
+*.cache
