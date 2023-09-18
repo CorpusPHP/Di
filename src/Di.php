@@ -23,7 +23,7 @@ class Di implements DiInterface {
 		return $return;
 	}
 
-	public function get( string $id ) {
+	public function get( $id ) {
 		if( !$this->has($id) ) {
 			throw new UndefinedIdentifierException("{$id} does not exist.");
 		}
