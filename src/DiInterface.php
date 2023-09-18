@@ -36,7 +36,7 @@ interface DiInterface extends ContainerInterface {
 	 * @param mixed[] $args
 	 * @throws \Corpus\Di\Exceptions\UndefinedIdentifierException
 	 */
-	public function getNew( $id, array $args = [] );
+	public function getNew( string $id, array $args = [] );
 
 	/**
 	 * Store a value via key to retrieve later
