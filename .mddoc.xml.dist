@@ -1,11 +1,14 @@
 <mddoc>
 
-	<docpage target="README.md" autoloader="psr4" autoloader-root="src" autoloader-root-namespace="Corpus\Di">
+	<docpage target="README.md">
+
+		<autoloader type="psr4" root="src" namespace="Corpus\Di"/>
+		<autoloader type="psr4" root="vendor/psr/container/src" namespace="Psr\Container"/>
 
 		<section title="Corpus Di">
 			<badge-poser type="version"/>
 			<badge-poser type="license"/>
-			<badge-github-action name="CorpusPHP/Di" workflow="CI"/>
+			<badge-github-action name="CorpusPHP/Di" workflow-file="ci.yml"/>
 			<text>A Simple PSR-11 Complaint Di Container</text>
 			<section title="Requirements">
 				<composer-requires/>

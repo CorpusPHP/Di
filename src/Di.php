@@ -9,10 +9,10 @@ use Corpus\Di\Exceptions\UndefinedIdentifierException;
 class Di implements DiInterface {
 
 	/** @var array The map in which to store our objects */
-	protected $map = [];
+	protected array $map = [];
 
 	/** @var array The map in which we store called values */
-	protected $memoizedCallResults = [];
+	protected array $memoizedCallResults = [];
 
 	public function getMany( array $ids ) : array {
 		$return = [];
@@ -56,7 +56,7 @@ class Di implements DiInterface {
 		return $return;
 	}
 
-	public function getNew( $id, array $args = [] ) {
+	public function getNew( string $id, array $args = [] ) {
 		if( !array_key_exists($id, $this->map) ) {
 			throw new UndefinedIdentifierException("{$id} does not exist.");
 		}

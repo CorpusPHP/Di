@@ -2,14 +2,14 @@
 
 [![Latest Stable Version](https://poser.pugx.org/corpus/di/version)](https://packagist.org/packages/corpus/di)
 [![License](https://poser.pugx.org/corpus/di/license)](https://packagist.org/packages/corpus/di)
-[![CI](https://github.com/CorpusPHP/Di/workflows/CI/badge.svg?)](https://github.com/CorpusPHP/Di/actions?query=workflow%3ACI)
+[![ci.yml](https://github.com/CorpusPHP/Di/actions/workflows/ci.yml/badge.svg?)](https://github.com/CorpusPHP/Di/actions/workflows/ci.yml)
 
 
 A Simple PSR-11 Complaint Di Container
 
 ## Requirements
 
-- **php**: >=7.2
+- **php**: >=7.4
 - **psr/container**: ~1.0 || ~2.0
 
 ## Installing
@@ -119,7 +119,25 @@ Retrieve multiple item; cached if existing. For use with list()
 
 ---
 
-#### Undocumented Method: `Di->get($id)`
+#### Method: Di->get
+
+```php
+function get($id)
+```
+
+Finds an entry of the container by its identifier and returns it.
+
+##### Parameters:
+
+- ***string*** `$id` - Identifier of the entry to look for.
+
+**Throws**: `\Psr\Container\NotFoundExceptionInterface` - No entry was found for **this** identifier.
+
+**Throws**: `\Psr\Container\ContainerExceptionInterface` - Error while retrieving the entry.
+
+##### Returns:
+
+- ***mixed*** - Entry.
 
 ---
 
@@ -135,6 +153,8 @@ Retrieve multiple item. For use with list()
 
 - ***array[]*** `$data` - The array of (names/keys / argument) pair tuple of the items
 
+**Throws**: `\InvalidArgumentException`
+
 ##### Returns:
 
 - ***array***
@@ -144,7 +164,7 @@ Retrieve multiple item. For use with list()
 #### Method: Di->getNew
 
 ```php
-function getNew($id [, array $args = []])
+function getNew(string $id [, array $args = []])
 ```
 
 Retrieve an item
@@ -153,6 +173,8 @@ Retrieve an item
 
 - ***string*** `$id` - The name/key of the item
 - ***array*** `$args`
+
+**Throws**: `\Corpus\Di\Exceptions\UndefinedIdentifierException`
 
 ---
 
@@ -186,7 +208,26 @@ Store a value via key to retrieve later
 
 ---
 
-#### Undocumented Method: `Di->has($id)`
+#### Method: Di->has
+
+```php
+function has($id) : bool
+```
+
+Returns true if the container can return an entry for the given identifier.  
+  
+Returns false otherwise.  
+  
+`has($id)` returning true does not mean that `get($id)` will not throw an exception.  
+It does however mean that `get($id)` will not throw a `NotFoundExceptionInterface`.
+
+##### Parameters:
+
+- ***string*** `$id` - Identifier of the entry to look for.
+
+##### Returns:
+
+- ***bool***
 
 ---
 
@@ -199,6 +240,8 @@ function raw(string $id)
 ##### Parameters:
 
 - ***string*** `$id` - The name/key to be retrieved
+
+**Throws**: `\Corpus\Di\Exceptions\UndefinedIdentifierException`
 
 ---
 
