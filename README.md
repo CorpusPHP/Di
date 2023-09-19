@@ -3,6 +3,7 @@
 [![Latest Stable Version](https://poser.pugx.org/corpus/di/version)](https://packagist.org/packages/corpus/di)
 [![License](https://poser.pugx.org/corpus/di/license)](https://packagist.org/packages/corpus/di)
 [![ci.yml](https://github.com/CorpusPHP/Di/actions/workflows/ci.yml/badge.svg?)](https://github.com/CorpusPHP/Di/actions/workflows/ci.yml)
+[![Coverage Status](https://coveralls.io/repos/github/CorpusPHP/Di/badge.svg)](https://coveralls.io/github/CorpusPHP/Di)
 
 
 A Simple PSR-11 Complaint Di Container

@@ -9,6 +9,7 @@
 			<badge-poser type="version"/>
 			<badge-poser type="license"/>
 			<badge-github-action name="CorpusPHP/Di" workflow-file="ci.yml"/>
+			<badge-coveralls name="github/CorpusPHP/Di" />
 			<text>A Simple PSR-11 Complaint Di Container</text>
 			<section title="Requirements">
 				<composer-requires/>
