@@ -122,7 +122,7 @@ Retrieve multiple item; cached if existing. For use with list()
 #### Method: Di->get
 
 ```php
-function get(string $id)
+function get($id)
 ```
 
 Finds an entry of the container by its identifier and returns it.
