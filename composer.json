@@ -34,5 +34,8 @@
 		"allow-plugins": {
 			"dealerdirect/phpcodesniffer-composer-installer": true
 		}
+	},
+	"provide": {
+		"psr/container-implementation": "^1.0"
 	}
 }
