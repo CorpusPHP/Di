@@ -10,8 +10,8 @@ A Simple PSR-11 Complaint Di Container
 
 ## Requirements
 
-- **php**: >=7.4
-- **psr/container**: ~1.0 || ~2.0
+- **php**: >=8.2
+- **psr/container**: ^2.0
 
 ## Installing
 
@@ -123,7 +123,7 @@ Retrieve multiple item; cached if existing. For use with list()
 #### Method: Di->get
 
 ```php
-function get($id)
+function get(string $id)
 ```
 
 Finds an entry of the container by its identifier and returns it.
@@ -182,7 +182,7 @@ Retrieve an item
 #### Method: Di->duplicate
 
 ```php
-function duplicate(string $src, string $dest)
+function duplicate(string $src, string $dest): callable|object|string
 ```
 
 Clone a given value into a second key
@@ -192,12 +192,16 @@ Clone a given value into a second key
 - ***string*** `$src` - The source
 - ***string*** `$dest` - The destination
 
+##### Return Value
+
+- ***callable*** | ***object*** | ***string***
+
 ---
 
 #### Method: Di->set
 
 ```php
-function set(string $id, $value)
+function set(string $id, $value): callable|object|string
 ```
 
 Store a value via key to retrieve later
@@ -205,14 +209,18 @@ Store a value via key to retrieve later
 ##### Parameters
 
 - ***string*** `$id` - The name/key of the item
-- ***mixed*** `$value` - The value to store
+- ***callable*** | ***object*** | ***string*** `$value` - The value to store
+
+##### Return Value
+
+- ***callable*** | ***object*** | ***string***
 
 ---
 
 #### Method: Di->has
 
 ```php
-function has($id): bool
+function has(string $id): bool
 ```
 
 Returns true if the container can return an entry for the given identifier.  
@@ -235,7 +243,7 @@ It does however mean that `get($id)` will not throw a `NotFoundExceptionInterfac
 #### Method: Di->raw
 
 ```php
-function raw(string $id)
+function raw(string $id): callable|object|string
 ```
 
 ##### Parameters
@@ -243,6 +251,10 @@ function raw(string $id)
 - ***string*** `$id` - The name/key to be retrieved
 
 **Throws**: `\Corpus\Di\Exceptions\UndefinedIdentifierException`
+
+##### Return Value
+
+- ***callable*** | ***object*** | ***string***
 
 ---
 

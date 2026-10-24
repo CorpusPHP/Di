@@ -8,10 +8,10 @@ use Corpus\Di\Exceptions\UndefinedIdentifierException;
 
 class Di implements DiInterface {
 
-	/** @var array The map in which to store our objects */
+	/** @var array<string,callable|object|string> The map in which to store our objects */
 	protected array $map = [];
 
-	/** @var array The map in which we store called values */
+	/** @var array<string,mixed> The map in which we store called values */
 	protected array $memoizedCallResults = [];
 
 	public function getMany( array $ids ) : array {
@@ -23,7 +23,7 @@ class Di implements DiInterface {
 		return $return;
 	}
 
-	public function get( $id ) {
+	public function get( string $id ) : mixed {
 		if( !$this->has($id) ) {
 			throw new UndefinedIdentifierException("{$id} does not exist.");
 		}
@@ -56,45 +56,41 @@ class Di implements DiInterface {
 		return $return;
 	}
 
-	public function getNew( string $id, array $args = [] ) {
+	public function getNew( string $id, array $args = [] ) : mixed {
 		if( !array_key_exists($id, $this->map) ) {
 			throw new UndefinedIdentifierException("{$id} does not exist.");
 		}
 
 		$entry = $this->map[$id];
 
-		switch( true ) {
-			case is_callable($entry):
-				return $this->callFromReflectiveParams($entry, $args);
-			case is_object($entry):
-				return $entry;
-			case class_exists($entry):
-				return $this->constructFromReflectiveParams($entry, $args);
-		}
-
-		throw new RuntimeException('unhandled di entry type');
+		return match( true ) {
+			is_callable($entry) => $this->callFromReflectiveParams($entry, $args),
+			is_object($entry) => $entry,
+			is_string($entry) && class_exists($entry) => $this->constructFromReflectiveParams($entry, $args),
+			default => throw new RuntimeException('unhandled di entry type'),
+		};
 	}
 
-	public function duplicate( string $src, string $dest ) {
+	public function duplicate( string $src, string $dest ) : callable|object|string {
 		return $this->set($dest, $this->raw($src));
 	}
 
-	public function set( string $id, $value ) {
+	public function set( string $id, mixed $value ) : callable|object|string {
 		switch( true ) {
 			case is_object($value):
 			case is_callable($value):
-			case is_string($value): // don't check if it is a class until get as it triggers the autoloader
+			case is_string($value): // Do not check if a string is a class here. It triggers the autoloader.
 				return $this->map[$id] = $value;
 		}
 
 		throw new InvalidArgumentException("Entries in Di must be a callable, a class name as a string, or an existing instance of an object.");
 	}
 
-	public function has( $id ) : bool {
+	public function has( string $id ) : bool {
 		return array_key_exists($id, $this->map);
 	}
 
-	public function raw( string $id ) {
+	public function raw( string $id ) : callable|object|string {
 		if( isset($this->map[$id]) ) {
 			return $this->map[$id];
 		}
@@ -146,7 +142,7 @@ class Di implements DiInterface {
 		return new $className;
 	}
 
-	public function callFromReflectiveParams( callable $callable, array $initials = [] ) {
+	public function callFromReflectiveParams( callable $callable, array $initials = [] ) : mixed {
 		try {
 			if( is_array($callable) ) {
 				$ref  = new \ReflectionMethod($callable[0], $callable[1]);
