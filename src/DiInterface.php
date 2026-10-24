@@ -36,29 +36,32 @@ interface DiInterface extends ContainerInterface {
 	 * @param mixed[] $args
 	 * @throws \Corpus\Di\Exceptions\UndefinedIdentifierException
 	 */
-	public function getNew( string $id, array $args = [] );
+	public function getNew( string $id, array $args = [] ) : mixed;
 
 	/**
 	 * Store a value via key to retrieve later
 	 *
-	 * @param string $id    The name/key of the item
-	 * @param mixed  $value The value to store
+	 * @param string                 $id    The name/key of the item
+	 * @param callable|object|string $value The value to store
+	 * @return callable|object|string
 	 */
-	public function set( string $id, $value );
+	public function set( string $id, mixed $value ) : callable|object|string;
 
 	/**
 	 * Clone a given value into a second key
 	 *
 	 * @param string $src  The source
 	 * @param string $dest The destination
+	 * @return callable|object|string
 	 */
-	public function duplicate( string $src, string $dest );
+	public function duplicate( string $src, string $dest ) : callable|object|string;
 
 	/**
 	 * @param string $id The name/key to be retrieved
+	 * @return callable|object|string
 	 * @throws \Corpus\Di\Exceptions\UndefinedIdentifierException
 	 */
-	public function raw( string $id );
+	public function raw( string $id ) : callable|object|string;
 
 	/**
 	 * Use reflection to execute a classes constructor with auto-populated parameters
@@ -74,6 +77,6 @@ interface DiInterface extends ContainerInterface {
 	 * @param mixed[] $initials An ordered list of arguments to populate initial arguments on callable
 	 * @return mixed the return value of the callable.
 	 */
-	public function callFromReflectiveParams( callable $callable, array $initials = [] );
+	public function callFromReflectiveParams( callable $callable, array $initials = [] ) : mixed;
 
 }
