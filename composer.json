@@ -20,6 +20,7 @@
 		"psr/container": "~1.0 || ~2.0"
 	},
 	"require-dev": {
+		"donatj/mddoc": "=0.14.1",
 		"phpunit/phpunit": "~9.0",
 		"friendsofphp/php-cs-fixer": "^3.95",
 		"squizlabs/php_codesniffer": "^4.0",
@@ -31,6 +32,7 @@
 		}
 	},
 	"config": {
+		"sort-packages": true,
 		"allow-plugins": {
 			"dealerdirect/phpcodesniffer-composer-installer": true
 		}

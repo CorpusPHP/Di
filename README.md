@@ -105,18 +105,18 @@ $controller2 = $di->constructFromReflectiveParams('MyController');
 #### Method: Di->getMany
 
 ```php
-function getMany(array $ids) : array
+function getMany(array $ids): array
 ```
 
 Retrieve multiple item; cached if existing. For use with list()
 
-##### Parameters:
+##### Parameters
 
 - ***string[]*** `$ids` - The names/keys of the items
 
-##### Returns:
+##### Return Value
 
-- ***array***
+- ***mixed[]***
 
 ---
 
@@ -128,7 +128,7 @@ function get($id)
 
 Finds an entry of the container by its identifier and returns it.
 
-##### Parameters:
+##### Parameters
 
 - ***string*** `$id` - Identifier of the entry to look for.
 
@@ -136,7 +136,7 @@ Finds an entry of the container by its identifier and returns it.
 
 **Throws**: `\Psr\Container\ContainerExceptionInterface` - Error while retrieving the entry.
 
-##### Returns:
+##### Return Value
 
 - ***mixed*** - Entry.
 
@@ -145,35 +145,35 @@ Finds an entry of the container by its identifier and returns it.
 #### Method: Di->getManyNew
 
 ```php
-function getManyNew(array $data) : array
+function getManyNew(array $data): array
 ```
 
 Retrieve multiple item. For use with list()
 
-##### Parameters:
+##### Parameters
 
 - ***array[]*** `$data` - The array of (names/keys / argument) pair tuple of the items
 
 **Throws**: `\InvalidArgumentException`
 
-##### Returns:
+##### Return Value
 
-- ***array***
+- ***mixed[]***
 
 ---
 
 #### Method: Di->getNew
 
 ```php
-function getNew(string $id [, array $args = []])
+function getNew(string $id, array $args = [])
 ```
 
 Retrieve an item
 
-##### Parameters:
+##### Parameters
 
 - ***string*** `$id` - The name/key of the item
-- ***array*** `$args`
+- ***mixed[]*** `$args`
 
 **Throws**: `\Corpus\Di\Exceptions\UndefinedIdentifierException`
 
@@ -187,7 +187,7 @@ function duplicate(string $src, string $dest)
 
 Clone a given value into a second key
 
-##### Parameters:
+##### Parameters
 
 - ***string*** `$src` - The source
 - ***string*** `$dest` - The destination
@@ -202,7 +202,7 @@ function set(string $id, $value)
 
 Store a value via key to retrieve later
 
-##### Parameters:
+##### Parameters
 
 - ***string*** `$id` - The name/key of the item
 - ***mixed*** `$value` - The value to store
@@ -212,7 +212,7 @@ Store a value via key to retrieve later
 #### Method: Di->has
 
 ```php
-function has($id) : bool
+function has($id): bool
 ```
 
 Returns true if the container can return an entry for the given identifier.  
@@ -222,11 +222,11 @@ Returns false otherwise.
 `has($id)` returning true does not mean that `get($id)` will not throw an exception.  
 It does however mean that `get($id)` will not throw a `NotFoundExceptionInterface`.
 
-##### Parameters:
+##### Parameters
 
 - ***string*** `$id` - Identifier of the entry to look for.
 
-##### Returns:
+##### Return Value
 
 - ***bool***
 
@@ -238,7 +238,7 @@ It does however mean that `get($id)` will not throw a `NotFoundExceptionInterfac
 function raw(string $id)
 ```
 
-##### Parameters:
+##### Parameters
 
 - ***string*** `$id` - The name/key to be retrieved
 
@@ -249,31 +249,34 @@ function raw(string $id)
 #### Method: Di->constructFromReflectiveParams
 
 ```php
-function constructFromReflectiveParams(string $className [, array $initials = []]) : object
+function constructFromReflectiveParams(
+	string $className,
+	array $initials = [],
+): object
 ```
 
 Use reflection to execute a classes constructor with auto-populated parameters
 
-##### Parameters:
+##### Parameters
 
 - ***string*** `$className` - The class to construct
-- ***array*** `$initials` - An ordered list of arguments to populate initial arguments on constructor
+- ***mixed[]*** `$initials` - An ordered list of arguments to populate initial arguments on constructor
 
 ---
 
 #### Method: Di->callFromReflectiveParams
 
 ```php
-function callFromReflectiveParams(callable $callable [, array $initials = []])
+function callFromReflectiveParams(callable $callable, array $initials = [])
 ```
 
 Use reflection to execute a callable with auto-populated parameters
 
-##### Parameters:
+##### Parameters
 
-- ***array*** `$initials` - An ordered list of arguments to populate initial arguments on callable
+- ***mixed[]*** `$initials` - An ordered list of arguments to populate initial arguments on callable
 
-##### Returns:
+##### Return Value
 
 - ***mixed*** - the return value of the callable.
 
